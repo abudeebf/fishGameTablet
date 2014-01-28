@@ -1,0 +1,6 @@
+7251 7251	Version:                3
+7251 0	Experimenter:           Experimenter
+7251 0	Subject:                Subject
+7251 0	Date:                   Sat Dec 14 00:14:58 EST 2013
+7251 0	Scriptfile:             scripts/scriptv3_1386996175848.txt
+0 -7251	FirstBlankScreen

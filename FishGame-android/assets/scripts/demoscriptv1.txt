@@ -1,0 +1,178 @@
+0	version	1.0.5
+0	minFishRelease	25
+0	maxFishRelease	40
+0	stereo	true
+0	minThrobSize	100
+0	maxThrobSize	200
+0	bgSound	sounds/background/water3.wav
+0	goodsoundFile	sounds/6hz
+0	goodimageFile	images/fish1
+0	goodthrobRate	0
+0	badsoundFile	sounds/8hz
+0	badimageFile	images/fish1
+0	badthrobRate	0
+0	backgroundImage	images/stream.jpg
+0	goodSound	sounds/good.wav
+0	badSound	sounds/bad.wav
+3873	bad 	right	1
+3554	bad 	left 	2
+3394	good	left 	3
+3766	good	left 	4
+2964	good	left 	5
+3910	good	left 	6
+2983	good	left 	7
+3843	bad 	right	8
+3035	bad 	right	9
+3451	good	left 	10
+0	minFishRelease	25
+0	maxFishRelease	40
+0	stereo	true
+0	minThrobSize	100
+0	maxThrobSize	200
+0	bgSound	sounds/background/water3.wav
+0	goodsoundFile	sounds/fish-silence
+0	goodimageFile	images/fish1
+0	goodthrobRate	6
+0	badsoundFile	sounds/fish-silence
+0	badimageFile	images/fish1
+0	badthrobRate	8
+0	backgroundImage	images/stream.jpg
+0	goodSound	sounds/good.wav
+0	badSound	sounds/bad.wav
+2757	good	right	11
+2781	good	right	12
+3240	good	right	13
+2624	good	right	14
+2752	good	right	15
+3057	good	right	16
+2661	bad 	left 	17
+2959	bad 	left 	18
+3960	good	right	19
+2504	good	left 	20
+0	minFishRelease	25
+0	maxFishRelease	40
+0	stereo	true
+0	minThrobSize	100
+0	maxThrobSize	200
+0	bgSound	sounds/background/water3.wav
+0	goodsoundFile	sounds/6hz
+0	goodimageFile	images/fish1
+0	goodthrobRate	6
+0	badsoundFile	sounds/8hz
+0	badimageFile	images/fish1
+0	badthrobRate	8
+0	backgroundImage	images/stream.jpg
+0	goodSound	sounds/good.wav
+0	badSound	sounds/bad.wav
+3580	good	right	21
+3524	good	left 	22
+2841	bad 	left 	23
+3558	bad 	left 	24
+2728	good	right	25
+3068	bad 	right	26
+3201	bad 	right	27
+2869	good	right	28
+2693	good	right	29
+2746	bad 	right	30
+0	minFishRelease	25
+0	maxFishRelease	40
+0	stereo	true
+0	minThrobSize	1
+0	maxThrobSize	2
+0	bgSound	sounds/background/water3.wav
+0	goodsoundFile	sounds/6hz
+0	goodimageFile	images/fish1
+0	goodthrobRate	6
+0	badsoundFile	sounds/8hz
+0	badimageFile	images/fish1
+0	badthrobRate	8
+0	backgroundImage	images/stream.jpg
+0	goodSound	sounds/good.wav
+0	badSound	sounds/bad.wav
+2872	good	left 	31
+3480	bad 	right	32
+3318	good	right	33
+3778	bad 	left 	34
+3522	good	right	35
+3555	good	right	36
+3434	bad 	left 	37
+3520	bad 	left 	38
+3092	bad 	right	39
+3672	good	right	40
+0	minFishRelease	25
+0	maxFishRelease	40
+0	stereo	true
+0	minThrobSize	100
+0	maxThrobSize	200
+0	bgSound	sounds/background/water3.wav
+0	goodsoundFile	sounds/6hz
+0	goodimageFile	images/fish1
+0	goodthrobRate	6
+0	badsoundFile	sounds/8hz
+0	badimageFile	images/fish1
+0	badthrobRate	8
+0	backgroundImage	images/stream.jpg
+0	goodSound	sounds/good.wav
+0	badSound	sounds/bad.wav
+3940	bad 	left 	41
+2807	good	left 	42
+3053	good	left 	43
+3943	bad 	right	44
+2608	bad 	left 	45
+2579	bad 	left 	46
+2640	good	left 	47
+2892	good	left 	48
+2616	good	right	49
+3090	good	left 	50
+0	minFishRelease	25
+0	maxFishRelease	40
+0	stereo	false
+0	minThrobSize	100
+0	maxThrobSize	200
+0	bgSound	sounds/background/water3.wav
+0	goodsoundFile	sounds/6hz
+0	goodimageFile	images/fish1
+0	goodthrobRate	6
+0	badsoundFile	sounds/8hz
+0	badimageFile	images/fish1
+0	badthrobRate	8
+0	backgroundImage	images/stream.jpg
+0	goodSound	sounds/good.wav
+0	badSound	sounds/bad.wav
+3260	bad 	right	51
+3378	good	left 	52
+3456	good	left 	53
+3580	bad 	left 	54
+3828	good	left 	55
+2745	bad 	right	56
+3851	bad 	left 	57
+3186	good	right	58
+3517	bad 	left 	59
+2785	good	left 	60
+0	minFishRelease	25
+0	maxFishRelease	40
+0	stereo	true
+0	minThrobSize	100
+0	maxThrobSize	200
+0	bgSound	sounds/background/water3.wav
+0	goodsoundFile	sounds/6hz
+0	goodimageFile	images/fish1
+0	goodthrobRate	6
+0	badsoundFile	sounds/8hz
+0	badimageFile	images/fish1
+0	badthrobRate	8
+0	backgroundImage	images/stream.jpg
+0	goodSound	sounds/good.wav
+0	badSound	sounds/bad.wav
+3435	bad 	left 	61
+3580	bad 	left 	62
+2729	good	right	63
+2558	bad 	left 	64
+2999	bad 	right	65
+3216	good	right	66
+2894	good	right	67
+3904	bad 	left 	68
+3348	good	right	69
+2930	bad 	left 	70
+0	gameover	1
+ 

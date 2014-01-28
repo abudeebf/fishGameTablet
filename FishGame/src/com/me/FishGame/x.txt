@@ -1,0 +1,11 @@
+Position.x-width/2,   //To position it in center horizontally
+                                      Position.y-height/2,  //To position it in center vertically
+                                      originX,
+                                       originY,  
+                                       width,    //width of texture
+                                       height,    //height of texture
+                                       scaleX,   //Negative value will flip the texture horizontally
+                                       scaleY   //Negative value will flip the texture vertically
+                                       Rotation //Rotation angle in degrees
+                                       );
+      } 

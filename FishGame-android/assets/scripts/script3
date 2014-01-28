@@ -1,0 +1,54 @@
+-1	version	3
+-1	stereo	true
+-1	minThrobSize	100
+-1	maxThrobSize	120
+-1	minBrightness	0
+-1	maxBrightness	24
+-1	bgSound	sounds/background/water1.wav
+-1	goodsoundFile	sounds/6hz
+-1	goodimageFile	images/fish1
+-1	goodthrobRate	6
+-1	badsoundFile	sounds/8hz
+-1	badimageFile	images/fish1
+-1	badthrobRate	8
+-1	backgroundImage	images/streamB.jpg
+-1	goodSound	sounds/good.wav
+-1	badSound	sounds/bad.wav
+-1	nonModulatedSound	sounds/2hz
+-1	totalCongruentTrials	10
+-1	totalInCongruentTrials	10
+-1	totalNeutralTrials	10
+-1	hasAvatar	false
+-1	avmode	0
+5500 sounds/2hz 6 2 1 left good
+3500 sounds/8hz 6 1 2 left good
+5500 sounds/2hz 6 2 3 right good
+3500 sounds/8hz 6 1 4 right good
+5500 sounds/6hz 8 1 5 right bad
+3500 sounds/2hz 8 2 6 right bad
+3500 sounds/6hz 6 0 7 right good
+5500 sounds/8hz 8 0 8 right bad
+4500 sounds/6hz 6 0 9 right good
+3500 sounds/6hz 8 1 10 right bad
+3500 sounds/2hz 8 2 11 right bad
+4500 sounds/2hz 8 2 12 left bad
+4500 sounds/8hz 8 0 13 right bad
+5500 sounds/8hz 6 1 14 right good
+3500 sounds/6hz 8 1 15 right bad
+5500 sounds/2hz 6 2 16 left good
+5500 sounds/2hz 8 2 17 left bad
+5500 sounds/6hz 8 1 18 right bad
+4500 sounds/6hz 8 1 19 right bad
+3500 sounds/8hz 8 0 20 left bad
+4500 sounds/8hz 6 1 21 right good
+3500 sounds/2hz 6 2 22 left good
+3500 sounds/8hz 6 1 23 right good
+5500 sounds/2hz 8 2 24 left bad
+4500 sounds/6hz 6 0 25 left good
+5500 sounds/2hz 6 2 26 left good
+4500 sounds/8hz 8 0 27 right bad
+5500 sounds/6hz 6 0 28 right good
+4500 sounds/8hz 8 0 29 left bad
+4500 sounds/6hz 6 0 30 right good
+0	gameover	1
+ 

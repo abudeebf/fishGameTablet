@@ -1,0 +1,47 @@
+7843 7843	Version:                3
+7843 0	Experimenter:           Experimenter
+7843 0	Subject:                Subject
+7843 0	Date:                   Sun Dec 15 18:12:53 EST 2013
+7843 0	Scriptfile:             scripts/scriptv3_1386996175848.txt
+0 -7843	FirstBlankScreen
+1033 1034	0	version	3
+1034 0	0	stereo	true
+1034 0	0	minThrobSize	100
+1034 0	0	maxThrobSize	120
+1034 0	0	minBrightness	0
+1034 0	0	maxBrightness	24
+1035 0	0	bgSound	sounds/background/water1.wav
+1035 0	0	goodsoundFile	sounds/6hz
+1035 0	0	goodimageFile	images/fish1
+1035 0	0	goodthrobRate	6
+1035 0	0	badsoundFile	sounds/8hz
+1036 0	0	badimageFile	images/fish1
+1036 0	0	badthrobRate	8
+1036 0	0	backgroundImage	images/streamB.jpg
+1036 0	0	goodSound	sounds/good.wav
+1036 0	0	badSound	sounds/bad.wav
+1036 0	0	nonModulatedSound	sounds/2hz
+1037 0	0	totalCongruentTrials	2
+1037 0	0	totalInCongruentTrials	2
+1037 0	0	totalNeutralTrials	2
+1037 0	0	hasAvatar	false
+1037 0	0	avmode	0
+8500 7463	launch	bad	2	1	right
+10220 1720	hitfish   	1720	false	p	
+10433 213	playFeedback: sounds/bad.wav
+15721 5288	launch	good	0	2	right
+16788 1067	hitfish   	1067	true	p	
+17059 270	playFeedback: sounds/good.wav
+22288 5230	launch	bad	0	3	right
+23761 1473	hitfish   	1473	false	p	
+23976 215	playFeedback: sounds/bad.wav
+28262 4286	launch	bad	1	4	right
+30030 1768	hitfish   	1768	true	l	
+30241 211	playFeedback: sounds/good.wav
+33531 3290	launch	good	2	5	right
+35115 1584	hitfish   	1584	true	p	
+35325 210	playFeedback: sounds/good.wav
+40616 5291	launch	good	1	6	left
+42213 1597	SecondBlankScreen
+42201 -12	hitfish   	1585	true	p	
+42415 214	playFeedback: sounds/good.wav

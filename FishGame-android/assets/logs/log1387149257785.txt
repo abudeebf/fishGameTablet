@@ -1,0 +1,6 @@
+5176 5176	Version:                3
+5176 0	Experimenter:           Experimenter
+5176 0	Subject:                Subject
+5176 0	Date:                   Sun Dec 15 18:14:17 EST 2013
+5176 0	Scriptfile:             scripts/scriptv3_1386996175848.txt
+0 -5176	FirstBlankScreen

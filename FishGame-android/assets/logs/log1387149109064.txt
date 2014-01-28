@@ -1,0 +1,44 @@
+30698 30698	Version:                3
+30698 0	Experimenter:           Experimenter
+30698 0	Subject:                Subject
+30698 0	Date:                   Sun Dec 15 18:11:49 EST 2013
+30698 0	Scriptfile:             scripts/scriptv3_1386996175848.txt
+24 -30674	0	version	3
+24 0	0	stereo	true
+25 0	0	minThrobSize	100
+25 0	0	maxThrobSize	120
+25 0	0	minBrightness	0
+25 0	0	maxBrightness	24
+25 0	0	bgSound	sounds/background/water1.wav
+26 0	0	goodsoundFile	sounds/6hz
+26 0	0	goodimageFile	images/fish1
+26 0	0	goodthrobRate	6
+26 0	0	badsoundFile	sounds/8hz
+26 0	0	badimageFile	images/fish1
+26 0	0	badthrobRate	8
+27 0	0	backgroundImage	images/streamB.jpg
+27 0	0	goodSound	sounds/good.wav
+27 0	0	badSound	sounds/bad.wav
+27 0	0	nonModulatedSound	sounds/2hz
+27 0	0	totalCongruentTrials	2
+28 0	0	totalInCongruentTrials	2
+28 0	0	totalNeutralTrials	2
+28 0	0	hasAvatar	false
+28 0	0	avmode	0
+4501 4473	launch	bad	2	1	right
+6303 1802	hitfish   	1802	false	p	
+6557 254	playFeedback: sounds/bad.wav
+11804 5247	launch	good	0	2	right
+13177 1373	hitfish   	1373	true	p	
+13406 229	playFeedback: sounds/good.wav
+18677 5271	launch	bad	0	3	right
+20364 1687	hitfish   	1687	false	p	
+20588 224	playFeedback: sounds/bad.wav
+24865 4277	launch	bad	1	4	right
+26315 1450	hitfish   	1450	false	p	
+26529 214	playFeedback: sounds/bad.wav
+29816 3287	launch	good	2	5	right
+30942 1126	hitfish   	1126	true	p	
+31188 246	playFeedback: sounds/good.wav
+36443 5255	launch	good	1	6	left
+37958 1515	hitfish   	1515	false	l	
