@@ -1,12 +1,9 @@
 package com.me.FishGame;
-import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import com.badlogic.gdx.Game;
@@ -27,7 +24,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-import com.sun.tools.javac.util.Log;
 
 public class GameView implements Screen {
 	public static SpriteBatch batch;
@@ -65,9 +61,11 @@ public class GameView implements Screen {
     final String uploadFilePath = Gdx.files.getExternalStoragePath();
      String uploadFileName = "";
      int serverResponseCode = 0;
+     private FileHandle scriptHandle;
 	
-	public GameView(Game game){
+	public GameView(Game game, FileHandle scriptHandle){
 		this.game=game;
+		this.scriptHandle = scriptHandle;
 		
 	}
 	// this method is same as paint method in desktop version 
@@ -194,7 +192,7 @@ public class GameView implements Screen {
 		    System.out.println("error");
 		}
 	
-		this.gm=new GameModel(gs);
+		this.gm=new GameModel(gs,scriptHandle);
 		Fish.GAME_START = System.nanoTime();
 		gm.start();
 		updateGameState(gs);

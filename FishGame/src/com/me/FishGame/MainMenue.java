@@ -2,15 +2,8 @@ package com.me.FishGame;
 
 //Fatima
 import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.util.List;
-
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -27,9 +20,10 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
+import com.badlogic.gdx.scenes.scene2d.ui.CheckBox.CheckBoxStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
-
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
@@ -43,13 +37,17 @@ public class MainMenue implements Screen {
     TextureAtlas buttonAtlas;
     TextButtonStyle buttonStyle;
     TextButton button;
+    TextButton audioToggle,visualToggle;
+    CheckBoxStyle checkStyle;
     Skin skin;
     SpriteBatch batch;
     Game game;
     Music music;
     Sound sound;
     String dwnload_file_path,dest_file_path;
+    boolean audioGame;
     public static FileHandle scan;
+    public static FileHandle audioFileHandle,visualFileHandle;
     private Texture splashTexture;
     
   
@@ -72,9 +70,14 @@ public class MainMenue implements Screen {
 	    stage.act(); // to update 
 	   
 	}
-    public static FileHandle returnScan()
+    public FileHandle returnScan()
     {
-    	return scan;
+    	if(audioGame) {
+    		return audioFileHandle;
+    	} else {
+    		return visualFileHandle;
+    	}
+    	
     }
 	@Override
 	public void resize(int width, int height) 
@@ -84,7 +87,7 @@ public class MainMenue implements Screen {
 	}
 	
 	// this method to download file script from the server 
-	public void downloadFile(String url, String dest_file_path) 
+	public FileHandle downloadFile(String url, String dest_file_path) 
 	{
         try {
           
@@ -103,10 +106,10 @@ public class MainMenue implements Screen {
             scan.writeBytes(buffer,false);
             
           
-             
+            return scan;
         } catch(Exception e) {
           System.out.println(e);
-            return; 
+            return null; 
         }
   }
 	 
@@ -115,10 +118,15 @@ public class MainMenue implements Screen {
 	public void show() 
 	{
 		Texture.setEnforcePotImages(false);
-		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_1388666174820.txt";
-	    dest_file_path = "scriptv3_1388666174820.txt";
+		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_Audio.txt";
+	    dest_file_path = "scriptv3_Audio.txt";
+	    audioFileHandle = downloadFile(dwnload_file_path,dest_file_path);
+	    
+		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_visual.txt";
+	    dest_file_path = "scriptv3_visual.txt";
+	    visualFileHandle = downloadFile(dwnload_file_path,dest_file_path);
 	    splashTexture =new Texture(Gdx.files.internal("images/backmenue.png"));
-	    downloadFile(dwnload_file_path,dest_file_path);
+	    
 	    stage=new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),true)	;
 	    
 		font= new BitmapFont(Gdx.files.internal("font.fnt"),
@@ -135,21 +143,63 @@ public class MainMenue implements Screen {
 		 buttonStyle.over=skin.getDrawable("pressedbutton");
 		 buttonStyle.down=skin.getDrawable("pressedbutton");
 		 buttonStyle.font=font;
-		 button=new TextButton("play",buttonStyle);
+		 
+		 
+		 button=new TextButton("Play Random",buttonStyle);
 		 stage.addActor(button);
 		 Gdx.input.setInputProcessor(stage); // to know if mouse over or not 
 		 button.addListener(new InputListener(){
              @Override
              public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
             	  
-            	   
-                   game.setScreen(new GameView(game)); 
+            	   if(Math.random()<.5) {
+            		   audioGame = true;
+            	   } else {
+            		   audioGame = false;
+            	   }
+                   game.setScreen(new GameView(game,audioGame?audioFileHandle:visualFileHandle)); 
                      return true;
              }
      });
+		 
 	 button.setWidth(Gdx.graphics.getWidth()/3);
 	 button.setHeight(Gdx.graphics.getHeight()/6);
 	 button.setPosition(Gdx.graphics.getWidth()/2-button.getWidth()/2,0);
+	 
+	 audioToggle = new TextButton("Play Audio",buttonStyle);
+	 stage.addActor(audioToggle);
+	 audioToggle.addListener(new InputListener(){
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
+        	  
+        	   
+               	
+               	audioGame = true;
+               	game.setScreen(new GameView(game,audioFileHandle)); 
+                 return true;
+         }
+ });
+	 audioToggle.setWidth(Gdx.graphics.getWidth()/4);
+	 audioToggle.setHeight(Gdx.graphics.getHeight()/6);
+	 audioToggle.setPosition(Gdx.graphics.getWidth()/2-button.getWidth()/2-audioToggle.getWidth()-20,0);
+	 
+	 
+	 visualToggle = new TextButton("Play Visual",buttonStyle);
+	 stage.addActor(visualToggle);
+	 visualToggle.addListener(new InputListener(){
+         @Override
+         public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
+        	  
+        	   
+        	 
+            	audioGame = false;
+            	game.setScreen(new GameView(game,visualFileHandle)); 
+                 return true;
+         }
+ });
+	 visualToggle.setWidth(Gdx.graphics.getWidth()/4);
+	 visualToggle.setHeight(Gdx.graphics.getHeight()/6);
+	 visualToggle.setPosition(Gdx.graphics.getWidth()/2+button.getWidth()/2+20,0);
 	 batch=new SpriteBatch();		
 		    
 		

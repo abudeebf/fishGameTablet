@@ -35,9 +35,11 @@ import com.badlogic.gdx.files.FileHandle;
 		 * Create a new GameModel based on the GameSpec parameter
 		 * 
 		 * @param gameSpec
+		 * @param scriptHandle 
 		 */
-		public GameModel(GameSpec gameSpec) {
+		public GameModel(GameSpec gameSpec, FileHandle scriptHandle) {
 			this.gameSpec = gameSpec;
+			this.scan = scriptHandle;
 		}
 
 		/**
@@ -817,8 +819,6 @@ import com.badlogic.gdx.files.FileHandle;
 
 			// initialize the scanner if its the first time we're reading a line
 			if (scan == null)
-				createScanner();
-			if (scan == null)
 				return;
 
 			// this should never happen because there is a GAMEOVER event at the end
@@ -936,10 +936,10 @@ import com.badlogic.gdx.files.FileHandle;
 		/**
 		 * if no scanner exists yet, then create it using the inputScriptFileName
 		 */
-		private void createScanner() {
-			scan=MainMenue.returnScan();
+		/*private void createScanner() {
 			
-		}
+			
+		}*/
 	
 		/*****************************************************************************
 		 * Fields used for the Graphical User Interface but that don't affect the
