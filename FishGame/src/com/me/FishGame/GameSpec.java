@@ -23,7 +23,7 @@ public class GameSpec {
 	public boolean requireGameViewUpdate = true;
 
 	public boolean stereo = true;
-	
+
 	/** 
 	 * delay inserted before playing clips, in milliseconds
 	 * This is used in the EEG mode so that the EEG signal for events
@@ -68,7 +68,7 @@ public class GameSpec {
 	public int interval[] = { 35, 45, 55 };
 	public int minBrightness = 10;
 	public int maxBrightness = 14;
-	
+
 	public GameSpec() {
 
 	}

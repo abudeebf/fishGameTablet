@@ -5,14 +5,14 @@ import com.badlogic.gdx.Gdx;
 // this the first class that runs the program
 public class FishGame extends Game {
 	Game game;
-	
-    
+
+
 	@Override
 	public void create() 
 	{	
 		game=this;
 		setScreen(new MainMenue(game));
-	    
+
 	}
 
 	@Override
@@ -23,8 +23,8 @@ public class FishGame extends Game {
 
 	@Override
 	public void render()
-	{	
-		super.render();
+	{	Gdx.graphics.setTitle("Fish Police!");
+	super.render();
 
 	}
 
