@@ -15,12 +15,18 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 public class GameView implements Screen {
 	public static SpriteBatch batch;
+	
 	ShapeRenderer sr;
 	Game game;
 	Music music;
@@ -40,6 +46,9 @@ public class GameView implements Screen {
 	public int width = Gdx.graphics.getWidth();
 	public int height = Gdx.graphics.getHeight();
 	float x;
+	Skin skin;
+	Table table;
+	String s;
 	public boolean response;
 	long delay=0L;
 	public boolean gameActive = false; // shouldn't this be in the model???
@@ -49,6 +58,7 @@ public class GameView implements Screen {
 	// default brightness is in image, 12, accesible using fishL[12] or
 	// fishR[12]
 	public long indicatorUpdate;
+	TextButton Q;
 	public long soundIndicatorUpdate;
 	public int thisFrame = 12;
 	boolean printresult=false;
@@ -70,16 +80,21 @@ public class GameView implements Screen {
 		if (gm.isGameOver() ) {
 			this.bgSound.stop();
 			batch.begin();
-			gameOverWindow();
+			gameOverWindow(s);
 			batch.end();
 			stage.draw();
 			stage.act();
 			if(printresult==false)
 			{  try {
 				printresult=true;
-				p.score=Integer.parseInt(total1.getText().toString().substring(total1.getText().toString().indexOf(":")+1).trim());
+				int hits = gm.getHits();
+				int misses = gm.getMisses();
+				int nokey = gm.getNoKeyPress();
+				int total=hits-misses-nokey;
+				p.score=total;
+				 s=SqliteUploader.pre_post(p);
 				gm.writeToLog(System.nanoTime(), p);
-				SqliteUploader.pre_post(p);
+				
 				gm.uploadFile(gm.retrunLogfile().name());
 
 			} 
@@ -108,22 +123,40 @@ public class GameView implements Screen {
 	}
 
 	// this method to render the gameOver window
-	private void gameOverWindow(){
+	private void gameOverWindow(String s){
 		int hits = gm.getHits();
 		int misses = gm.getMisses();
 		int nokey = gm.getNoKeyPress();
 		int total=hits-misses-nokey;
 		batch.draw(gameOverimg, 0, 0 , width, height );
 		right.setText("Right: " +hits);
-		right.setPosition((width)/2-(right.getMinWidth())/2,(height)/2+(right.getMinHeight()) );
+		
+		right.setPosition((right.getMinWidth()),(height)/2+(right.getMinHeight())*4 );
 		wrong.setText("Wrong: " +misses);
-		wrong.setPosition((width)/2-(right.getMinWidth())/2,(height)/2 - (right.getMinHeight()));
+		wrong.setPosition((right.getMinWidth()),(height)/2 + (right.getMinHeight())*2);
 		missed.setText("Missed: " +nokey);
-		missed.setPosition((width)/2-(right.getMinWidth())/2,(height)/2-(right.getMinHeight())*2);
-		total1.setText("Total Point: " + total);
-		total1.setPosition((width)/2-(right.getMinWidth())/2,(height)/2-right.getMinHeight()*3);
+		missed.setPosition((right.getMinWidth()),(height)/2+ (right.getMinHeight()));
+		total1.setText("Total Point: " + total  + "\n" + s);
+		total1.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()));
 		label.setText("");
+		
+		Q = new TextButton("Quit Game",skin);
+		Q.setWidth(200);
+		Q.setHeight(50);
+		Q.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()*4));
+	    stage.addActor(Q);
+	    Gdx.input.setInputProcessor(stage);
+		Q.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				
+				Gdx.app.exit();
+			    
+				return false;
+	
 	}
+		});
+	}
+
 
 	// handle the tilting of the tablet 
 	private  void handleAccelerometer(){
@@ -194,7 +227,8 @@ public class GameView implements Screen {
 		batch=new SpriteBatch();
 		font= new BitmapFont(Gdx.files.internal("font.fnt"),
 				false);
-		style=new LabelStyle(font,Color.BLACK);
+		skin=new Skin(Gdx.files.internal("data/uiskin.json"));
+		style=new LabelStyle(font,Color.WHITE);
 		label= new Label("0",style);
 		right=new Label("",style);
 		wrong=new Label(" ",style);
@@ -207,6 +241,7 @@ public class GameView implements Screen {
 		stage.addActor(wrong);
 		stage.addActor(missed);
 		stage.addActor(total1);
+		
 	}
 
 	@Override
@@ -431,7 +466,7 @@ public class GameView implements Screen {
 		// here we read in the background image which tiles the scene
 		try {
 			streamImage =new Texture(Gdx.files.internal(gs.backgroundImage));
-			gameOverimg=new Texture(Gdx.files.internal("images/GameOver.png"));
+			gameOverimg=new Texture(Gdx.files.internal("images/0053.jpg"));
 
 			streamImage2 = new Texture(Gdx.files.internal("images/streamB2.jpg"));
 

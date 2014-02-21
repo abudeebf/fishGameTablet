@@ -62,14 +62,15 @@ public class MainMenue implements Screen {
 
 	@Override
 	public void render(float delta) {
-		Gdx.gl.glClearColor(0, 0, 0, 0);
+		
+			Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(splashTexture,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
 		batch.end();
 		stage.draw();
 		stage.act(); // to update 
-
+		
 	}
 	public FileHandle returnScan()
 	{
@@ -121,7 +122,9 @@ public class MainMenue implements Screen {
 	{
 		Texture.setEnforcePotImages(false);
 		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_Audio.txt";
+		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_1388666174820.txt";
 		dest_file_path = "scriptv3_Audio.txt";
+		dest_file_path = "scriptv3_1388666174820.txt";
 		audioFileHandle = downloadFile(dwnload_file_path,dest_file_path);
 		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_visual.txt";
 		dest_file_path = "scriptv3_visual.txt";
@@ -186,8 +189,7 @@ public class MainMenue implements Screen {
 
 	@Override
 	public void dispose() {
-
-
+		Gdx.app.exit();
 	}
 
 
