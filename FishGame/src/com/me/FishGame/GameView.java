@@ -38,6 +38,7 @@ public class GameView implements Screen {
 	public Music bgSound;
 	Stage stage;
 	Label label,gameOver,right,wrong,missed,total1;
+	Label fishCount;
 	LabelStyle style;
 	BitmapFont font;
 	String lastbgSound;
@@ -52,7 +53,7 @@ public class GameView implements Screen {
 	public boolean response;
 	long delay=0L;
 	public boolean gameActive = false; // shouldn't this be in the model???
-	public Texture streamImage, streamImage2, fish1, boat, coin,fixationMark,bubble,gameOverimg;
+	public Texture streamImage, streamImage2, fish1, boat, coin,treasure,fixationMark,bubble,gameOverimg;
 	Player p;
 	public TextureRegion[] fishL, fishR;// these arrays store the sprite images used to adjust brightness. the
 	// default brightness is in image, 12, accesible using fishL[12] or
@@ -109,11 +110,14 @@ public class GameView implements Screen {
 		}
 		batch.begin();
 		drawBackground(); // I have to think how to make it move in the oppsite side
-		drawHud();
+		
+		
+		
 		drawFish();
 		if (hasAvatar)
 			drawAvatar();
 		batch.end();
+		drawHud();
 		stage.draw();
 		stage.act(); 
 		drawTimeBar();
@@ -139,6 +143,7 @@ public class GameView implements Screen {
 		total1.setText("Total Point: " + total  + "\n" + s);
 		total1.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()));
 		label.setText("");
+		fishCount.setText("");
 		
 		Q = new TextButton("Quit Game",skin);
 		Q.setWidth(200);
@@ -161,7 +166,10 @@ public class GameView implements Screen {
 	// handle the tilting of the tablet 
 	private  void handleAccelerometer(){
 		x=Gdx.input.getAccelerometerX();
-		if (x>3 || x<-3)
+		  
+		float netTilt = (float)(x - gm.getNeutralAccelPos());
+	   
+		if (netTilt>3 || netTilt<-3)
 		{ 
 			flash = true;
 			// we set the update time to be 50 ms after the keypress, so the
@@ -228,8 +236,9 @@ public class GameView implements Screen {
 		font= new BitmapFont(Gdx.files.internal("font.fnt"),
 				false);
 		skin=new Skin(Gdx.files.internal("data/uiskin.json"));
-		style=new LabelStyle(font,Color.WHITE);
+		style=new LabelStyle(font,Color.BLACK);
 		label= new Label("0",style);
+		fishCount = new Label("0 Fish",style);
 		right=new Label("",style);
 		wrong=new Label(" ",style);
 		missed=new Label("" ,style);
@@ -425,16 +434,63 @@ public class GameView implements Screen {
 	private void drawHud() 
 	{
 
-		batch.draw(coin,0 , Gdx.graphics.getHeight()-120, 80, 80);
-		int hits = gm.getHits();
-		int misses = gm.getMisses();
-		int nokey = gm.getNoKeyPress();
-		int total=hits-misses-nokey;
-		style=new LabelStyle(font,Color.BLACK);
-		label.setStyle(style);
-		label.setText(total+"");
-		label.setPosition(80, Gdx.graphics.getHeight()-100);
-		stage.addActor(label);
+		sr.begin(ShapeType.Filled);
+		sr.setColor(new Color(.75f,.75f,.25f,1f));
+		sr.rect(0, Gdx.graphics.getHeight()-140, 160, 40); //lower left money sign
+		sr.rect(0, Gdx.graphics.getHeight()-100, Gdx.graphics.getWidth(),100); //main rectangle
+		sr.triangle(160,Gdx.graphics.getHeight()-140,250,Gdx.graphics.getHeight()-100,160,Gdx.graphics.getHeight()-100); //lower left triangle
+		sr.triangle(Gdx.graphics.getWidth() - 160 , Gdx.graphics.getHeight()-140, Gdx.graphics.getWidth()-250, Gdx.graphics.getHeight()-100, Gdx.graphics.getWidth()-160, Gdx.graphics.getHeight()-100); //lower right triangle
+		sr.rect(Gdx.graphics.getWidth() - 160, Gdx.graphics.getHeight()-140, 160, 40); // lower right fish count
+		sr.end();
+	
+		
+		
+		batch.begin();
+		int score = gm.getScore();
+		int displayScore = score;
+		
+		long tickupStart = gm.getTickupStart();
+		long tickupEnd = tickupStart + 500;
+		long currentTime = System.currentTimeMillis();
+		if(currentTime < tickupEnd) {
+			int prevScore = gm.getPreviousScore();
+			System.out.println(currentTime);
+			System.out.println(tickupStart);
+			System.out.println(currentTime - tickupStart);
+			double tickupRatio = ((currentTime - tickupStart) + 0.0)/(tickupEnd - tickupStart);
+			displayScore = prevScore + (int)((score - prevScore) * tickupRatio);
+		}
+		
+		int bagScore = displayScore;
+		
+		int xOffset = 20;
+		
+		while(bagScore > 500) {
+			batch.draw(treasure,xOffset , Gdx.graphics.getHeight()-90, 54, 50);
+			bagScore-=500;
+			xOffset += 59;
+		}
+		
+		while(bagScore>100) {
+			batch.draw(coin,xOffset , Gdx.graphics.getHeight()-90, 30, 40);
+			bagScore-=100;
+			xOffset += 35;
+		}
+		batch.draw(coin,xOffset,Gdx.graphics.getHeight()-90,30,(int)(40*(bagScore/100.0)));
+		
+		
+
+		 style=new LabelStyle(font,Color.BLACK);
+		 label.setStyle(style);
+		 label.setText("$" + displayScore+"");
+		 label.setPosition(10, Gdx.graphics.getHeight()-140);
+		 stage.addActor(label);
+		 
+		 fishCount.setText(gm.getFishSpawnedCount() + " Fish");
+		 fishCount.setPosition(Gdx.graphics.getWidth()-150,Gdx.graphics.getHeight()-140);
+		 stage.addActor(fishCount);
+		 
+		 batch.end();
 
 
 	}
@@ -476,7 +532,9 @@ public class GameView implements Screen {
 			fishL = spriteImageArray(fish1, 5, 5);
 			fishR = flibHorizantly(fish1, 5, 5);
 
-			coin = new Texture(Gdx.files.internal("images/wealth.png"));
+			coin = new Texture(Gdx.files.internal("images/money_bag.png"));
+			treasure = new Texture(Gdx.files.internal("images/treasurechest.png"));
+			
 			hasAvatar = gs.hasAvatar;
 			if (!gs.bgSound.equals(this.lastbgSound)) {
 				this.lastbgSound = gs.bgSound;

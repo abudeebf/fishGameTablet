@@ -497,6 +497,9 @@ public class GameModel {
 			//sendEEGMarker(ge.when,"KEYG");
 			this.wealth++;
 			this.hits += 1;
+			previousScore = score;
+			score+=100 + this.timeRemaining;
+			tickupStart = System.currentTimeMillis();
 		} else {
 			//sendEEGMarker(ge.when,"KEYB");
 			this.wealth--;
@@ -587,6 +590,11 @@ public class GameModel {
 				previousActorTime += a.lifeSpan;
 				currentActorTime = 0;
 				this.noKeyPress += 1;
+				
+				/*previousScore = score;
+				score += (int)50*Math.random() + 50; //used for testing score display, not for production
+				tickupStart = System.currentTimeMillis();*/
+				
 			} else {
 				this.currentActorTime = a.lifeSpan;
 			}
@@ -619,6 +627,10 @@ public class GameModel {
 		//			}
 	}
 
+	private int fishSpawnedCount = 0;
+	public int getFishSpawnedCount() {
+		return fishSpawnedCount;
+	}
 
 	/**
 	 * spawns a new fish using the data stored in the this.nextFish object
@@ -673,10 +685,24 @@ public class GameModel {
 		// send a flash to the indicator
 		flash = true;
 		indicatorUpdate = System.nanoTime() + 50000000l;
+		
+
 
 		// log this event
 		writeToLog(now, nextFish); // indicate that a was spawned
 
+		
+		//get neutral accel state
+		neutralAccelerometerPosition = Gdx.input.getAccelerometerX();
+		
+		fishSpawnedCount++;
+	}
+	
+    //this is updated whenever a fish is spawned
+    private float neutralAccelerometerPosition;
+	
+	public float getNeutralAccelPos() {
+		return neutralAccelerometerPosition;
 	}
 
 	private void sendEEGTrialStartMarker(long now, int congruent, boolean fromLeft, Species species) {
@@ -988,6 +1014,19 @@ public class GameModel {
 
 	/** these variables record good/bad hits */
 	private int hits, misses, noKeyPress;
+	
+	/**Detailed score**/
+	private int score,previousScore;
+	public int getScore() {
+		return score;
+	}
+	private long tickupStart;
+	public long getTickupStart() {
+		return tickupStart;
+	}
+	public int getPreviousScore() {
+		return previousScore;
+	}
 
 	/**
 	 * returns the number of hits so far
