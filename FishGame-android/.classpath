@@ -9,6 +9,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/gdx-backend-android.jar" sourcepath="libs/gdx-backend-android-sources.jar"/>
 	<classpathentry exported="true" kind="lib" path="/FishGame/libs/tween-engine-api.jar" sourcepath="/FishGame/libs/tween-engine-api-sources.jar"/>
 	<classpathentry exported="true" kind="con" path="com.android.ide.eclipse.adt.DEPENDENCIES"/>
-	<classpathentry kind="lib" path="/Users/fatima/Downloads/ivy-2/ivy-2.0.0-rc1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Nick/workspace/fishGameTablet/ivy-2.0.0-rc1.jar"/>
 	<classpathentry kind="output" path="bin/classes"/>
 </classpath>
