@@ -15,10 +15,11 @@ public class SqliteUploader {
 	private static final  String url = "http://moore.cs-i.brandeis.edu/fishpolice!/add_user.php";
 	public static String pre_post(Player p ) {
 
-
+        
 		String urlParameters = "";
 
 		try {
+			
 			urlParameters = "intial=" + URLEncoder.encode(p.intial, "UTF-8") +
 					"&score=" + URLEncoder.encode(""+p.score, "UTF-8") +
 					"&vmode=" + URLEncoder.encode(""+p.vmode, "UTF-8") +

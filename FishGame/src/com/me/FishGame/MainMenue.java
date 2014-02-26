@@ -140,6 +140,7 @@ public class MainMenue implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
 				vGame = false;
+				
 				game.setScreen(new UserInfo(game,audioFileHandle,vGame)); 
 				return true;
 			}

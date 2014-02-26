@@ -39,7 +39,7 @@ public class GameView implements Screen {
 	Stage stage;
 	Label label,gameOver,right,wrong,missed,total1;
 	Label fishCount;
-	LabelStyle style;
+	LabelStyle style,style2;
 	BitmapFont font;
 	String lastbgSound;
 	public Sound goodclip, badclip;
@@ -88,11 +88,11 @@ public class GameView implements Screen {
 			if(printresult==false)
 			{  try {
 				printresult=true;
-				int hits = gm.getHits();
+				double hits = gm.getHits();
 				int misses = gm.getMisses();
 				int nokey = gm.getNoKeyPress();
-				int total=hits-misses-nokey;
-				p.score=total;
+				double total=hits+misses+nokey;
+				p.score=(hits/total) *100;
 				 s=SqliteUploader.pre_post(p);
 				gm.writeToLog(System.nanoTime(), p);
 				
@@ -143,8 +143,6 @@ public class GameView implements Screen {
 		total1.setText("Total Point: " + total  + "\n" + s);
 		total1.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()));
 		label.setText("");
-		fishCount.setText("");
-		
 		Q = new TextButton("Quit Game",skin);
 		Q.setWidth(200);
 		Q.setHeight(50);
@@ -161,6 +159,7 @@ public class GameView implements Screen {
 	}
 		});
 	}
+
 
 
 	// handle the tilting of the tablet 
@@ -239,10 +238,11 @@ public class GameView implements Screen {
 		style=new LabelStyle(font,Color.BLACK);
 		label= new Label("0",style);
 		fishCount = new Label("0 Fish",style);
-		right=new Label("",style);
-		wrong=new Label(" ",style);
-		missed=new Label("" ,style);
-		total1=new Label("",style);
+		style2=new LabelStyle(font,Color.WHITE);
+		right=new Label("",style2);
+		wrong=new Label(" ",style2);
+		missed=new Label("" ,style2);
+		total1=new Label("",style2);
 		stage=new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),true)	;	
 		sr=new ShapeRenderer();
 		//stage.addActor(gameOver);

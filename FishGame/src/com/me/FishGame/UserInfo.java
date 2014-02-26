@@ -18,7 +18,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField.TextFieldStyle;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 
 
@@ -41,6 +40,7 @@ public class UserInfo implements Screen {
 		this.game=game;
 		this.scriptHandle=scriptHandle;
 		this.vmode=vmode;
+		
 	}
 	@Override
 	public void render(float delta) {
@@ -74,7 +74,7 @@ public class UserInfo implements Screen {
 		stylet.fontColor=Color.BLACK;
 		// stylet.background = skin.getDrawable("textbox");
 		Gdx.input.setInputProcessor(stage);
-		nameLabel = new Label("Intial:", skin);
+		nameLabel = new Label("Initial:", skin);
 		//  nameLabel.setPosition(Gdx.graphics.getWidth()/2-nameLabel.getText().length(), Gdx.graphics.getHeight()-(nameLabel.getHeight()*2));
 		nameText = new TextField("", skin);
 		//nameText.setPosition(Gdx.graphics.getWidth()/2+ (2*nameLabel.getWidth()),Gdx.graphics.getHeight()-(nameLabel.getHeight()*2));
@@ -115,7 +115,7 @@ public class UserInfo implements Screen {
 		stage.addActor( table );
 		Label welcome;
 		if (vmode)
-		{
+		{    System.out.println(vmode);
 			 welcome=new Label("Welecome to Fish Police! \n Please Enter your information to play visual mode" ,skin);
 		}
 		else
