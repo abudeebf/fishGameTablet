@@ -134,7 +134,7 @@ public class GameView implements Screen {
 		int total=hits-misses-nokey;
 		batch.draw(gameOverimg, 0, 0 , width, height );
 		right.setText("Right: " +hits);
-		
+		total=getScore();
 		right.setPosition((right.getMinWidth()),(height)/2+(right.getMinHeight())*4 );
 		wrong.setText("Wrong: " +misses);
 		wrong.setPosition((right.getMinWidth()),(height)/2 + (right.getMinHeight())*2);
@@ -143,6 +143,7 @@ public class GameView implements Screen {
 		total1.setText("Total Point: " + total  + "\n" + s);
 		total1.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()));
 		label.setText("");
+		fishCount.setText("");
 		Q = new TextButton("Quit Game",skin);
 		Q.setWidth(200);
 		Q.setHeight(50);
@@ -446,21 +447,7 @@ public class GameView implements Screen {
 		
 		
 		batch.begin();
-		int score = gm.getScore();
-		int displayScore = score;
-		
-		long tickupStart = gm.getTickupStart();
-		long tickupEnd = tickupStart + 500;
-		long currentTime = System.currentTimeMillis();
-		if(currentTime < tickupEnd) {
-			int prevScore = gm.getPreviousScore();
-			System.out.println(currentTime);
-			System.out.println(tickupStart);
-			System.out.println(currentTime - tickupStart);
-			double tickupRatio = ((currentTime - tickupStart) + 0.0)/(tickupEnd - tickupStart);
-			displayScore = prevScore + (int)((score - prevScore) * tickupRatio);
-		}
-		
+		int displayScore=getScore();
 		int bagScore = displayScore;
 		
 		int xOffset = 20;
@@ -494,7 +481,23 @@ public class GameView implements Screen {
 
 
 	}
-
+    private int getScore(){
+    	int score = gm.getScore();
+		int displayScore = score;
+		
+		long tickupStart = gm.getTickupStart();
+		long tickupEnd = tickupStart + 500;
+		long currentTime = System.currentTimeMillis();
+		if(currentTime < tickupEnd) {
+			int prevScore = gm.getPreviousScore();
+			System.out.println(currentTime);
+			System.out.println(tickupStart);
+			System.out.println(currentTime - tickupStart);
+			double tickupRatio = ((currentTime - tickupStart) + 0.0)/(tickupEnd - tickupStart);
+			displayScore = prevScore + (int)((score - prevScore) * tickupRatio);
+		}
+		return displayScore;
+    }
 	// method to draw the boat avatar
 	private void drawAvatar()
 	{

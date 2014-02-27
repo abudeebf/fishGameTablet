@@ -612,21 +612,7 @@ public class GameModel {
 	}
 
 
-	public void sendEEGMarker(long now,String code){
-		//
-		//			if (this.usingDebgEgg)
-		//				return;
-		//			
-		//			//this.writeToLog(now, "sendEEGMarker:"+ code);
-		//			
-		//			try {
-		//				EEG.eventNS0(code, systimeToMillis(now), 1);
-		//			} catch (IOException e) {
-		//				e.printStackTrace();
-		//				System.err.println("Problem with EEG connection!!!\n Error is "+e);
-		//			}
-	}
-
+	
 	private int fishSpawnedCount = 0;
 	public int getFishSpawnedCount() {
 		return fishSpawnedCount;
@@ -669,7 +655,7 @@ public class GameModel {
 		nextFishTime = now + 2000L * million;
 
 		// send marker to EEG
-		sendEEGMarker(now,"GO--");
+		
 
 		// System.out.println("Spawning new fish: "+nextFish);
 
@@ -705,49 +691,7 @@ public class GameModel {
 		return neutralAccelerometerPosition;
 	}
 
-	private void sendEEGTrialStartMarker(long now, int congruent, boolean fromLeft, Species species) {
-		/* EEG code */
-		// here we create a code of the form Txxx
-		// where xxx is the trial number 
-		// to be safe we handle the case more than 1000 trials
-		// by taking the remainder of the trial number by 1000
-		// and then making a number of the form 1xxx where xxx
-		// is the trial number modulo 1000
-		String trialString = Integer.toString(1000+(nextFish.trial % 1000 ));
-		String code = "T" + trialString.substring(1);
-		sendEEGMarker(now,code);
-
-		switch (congruent) {
-		case 0: code = "CONG";break;
-		case 1: code = "INCO";break;
-		case 2: code = "CONT";break;
-		case 3: code = "AUDI";break;
-		default: code="ERRO";break;
-		}
-
-		sendEEGMarker(now+million,code);
-
-		if (fromLeft)
-			code="DIRL";
-		else
-			code="DIRR";
-
-		sendEEGMarker(now+2*million,code);
-
-		// Yile wants the frequency encoded here too
-		// but that is a little tricky as it depends on 
-		// if they are focused on audio or visual
-		// and if it is audio, then we only have a sound file
-		// and we don't actually have an integer frequency....
-		switch (species) {
-		case good: code="GOOD";break;
-		case bad: code="BAD "; break;
-		default: code="ERRO"; break;
-		}
-		now = System.nanoTime();
-		sendEEGMarker(now+3*million,code);		
-	}
-
+	
 	private void playFishSound() {
 		// this gives the location of the soundfile
 		String clip;
@@ -804,31 +748,6 @@ public class GameModel {
 		soundIndicatorUpdate = System.nanoTime() + 50000000l;
 
 
-		// if fish is not silent play sound
-		/*
-			if (nextFish.congruent != 2 && gameSpec.avmode != 1) {
-				nextFish.ct.loop();
-				soundflash = true;
-				soundIndicatorUpdate = System.nanoTime() + 50000000l;
-			} else if (gameSpec.avmode == 1) {
-				nextFish.ct.loop();
-				soundflash = true;
-				soundIndicatorUpdate = System.nanoTime() + 50000000l;
-			}
-		 */
-		/*
-			// if fish is not silent play sound
-			if (nextFish.congruent != 2 && gameSpec.avmode != 1) {
-				nextFish.ct.loop();
-				soundflash = true;
-				soundIndicatorUpdate = System.nanoTime() + 50000000l;
-			} else if (gameSpec.avmode == 1) {
-				nextFish.ct.loop();
-				soundflash = true;
-				soundIndicatorUpdate = System.nanoTime() + 50000000l;
-			}
-		 */
-
 
 
 
@@ -858,15 +777,7 @@ public class GameModel {
 		if (scan == null)
 			return;
 
-		// this should never happen because there is a GAMEOVER event at the end
-		// of every script file, but just in case, we'll end the game...
-		//			if (!scan.) {
-		//				System.out
-		//						.println("This should never happen!  Reached end of file!!");
-		//				this.setGameOver(true);
-		//				this.nextFishTime = this.nextFishTime + 10 * 1000000000L;
-		//				return;
-		//			}
+		
 		fileContent=scan.readString();
 		String[] lines=fileContent.split("\\r?\\n");
 		for (int i=0;i<lines.length;i++)
@@ -895,32 +806,12 @@ public class GameModel {
 	private void readNextFishData(long now, long interval) {
 		System.out.println("read next fish data");
 		nextFishTime = interval * million + System.nanoTime(); // now;
-		// the sound file and visual hertz in the input files are not used and
-		// are just documentation....
-
-		// REFACTOR: we should do a check to see that these values
-		// all are consistent as congruent, sound, species and visualhz are
-		// redundant...
-		//String sound = scriptinfo.get(0).split("\\s+")[1];
-		//int visualhz = Integer.parseInt(scriptinfo.get(0).split("\\s+")[2]);
-		/*
-			if (visualhz != .visualhz) {
-
-			}
-		 */
 
 		int congruent = Integer.parseInt(scriptinfo.get(0).split("\\s+")[3]);
 		int trialnum = Integer.parseInt(scriptinfo.get(0).split("\\s+")[4]);
 		String fromLeft = scriptinfo.get(0).split("\\s+")[5];
 
 		String species = scriptinfo.get(0).split("\\s+")[6];
-
-		/*
-		 * System.out.println("Next fish release in "+interval+" milliseconds\n"
-		 * + "from \n"+ System.nanoTime() + " at \n"+ nextFishTime
-		 * +"\n  or in ms "+ "at "+(nextFishTime-gameStart)/million +
-		 * " ms since start");
-		 */
 
 		scriptinfo.remove(0); // skip over the rest of the line
 
@@ -937,9 +828,7 @@ public class GameModel {
 
 		nextFishTime = now + interval * million;
 
-		// this is the beginning of the trial so we can post some EEG markers
-		sendEEGTrialStartMarker(now,nextFish.congruent,nextFish.fromLeft,nextFish.species);
-
+		
 	}
 
 	/*
