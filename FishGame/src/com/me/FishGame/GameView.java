@@ -181,7 +181,7 @@ public class GameView implements Screen {
 			if (gm.getNumFish() == 0 ) {
 				return;}
 			else
-			{ boolean correctResponse = gm.handleKeyPress(x, now );
+			{ boolean correctResponse = gm.handleKeyPress(netTilt, now );
 
 			try {
 				Thread.sleep(gm.gameSpec.audioDelay);
