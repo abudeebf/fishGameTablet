@@ -8,6 +8,7 @@ import android.media.MediaPlayer;
 import android.media.MediaPlayer.OnCompletionListener;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.VideoView;
 
@@ -19,7 +20,7 @@ public class SplashScreen extends Activity implements OnCompletionListener
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 		// to make the screen active all the time
-	     
+		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		 getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   
 		String fileName = "android.resource://"+  getPackageName() +"/raw/video";
 		VideoView vv = (VideoView) this.findViewById(R.id.surface);
