@@ -36,7 +36,7 @@ public class MainMenue implements Screen {
 	TextureAtlas buttonAtlas;
 	TextButtonStyle buttonStyle;
 	TextButton button;
-	TextButton audioToggle,visualToggle;
+	TextButton audioToggle,visualToggle,QuitToggle;
 	CheckBoxStyle checkStyle;
 	Skin skin;
 	SpriteBatch batch;
@@ -62,8 +62,7 @@ public class MainMenue implements Screen {
 
 	@Override
 	public void render(float delta) {
-		
-			Gdx.gl.glClearColor(0, 0, 0, 0);
+		Gdx.gl.glClearColor(0, 0, 0, 0);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(splashTexture,0,0,Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
@@ -156,6 +155,15 @@ public class MainMenue implements Screen {
 				return true;
 			}
 		});
+		QuitToggle = new TextButton("Quit",skin);
+		stage.addActor(QuitToggle);
+		QuitToggle.addListener(new InputListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
+				Gdx.app.exit();
+				return true;
+			}
+		});
 		stage.addActor(table);
 		table.setFillParent(true);
 		Label welcome=new Label("Welecome to Fish Police! \n Please Choose the mode you want to play",skin);
@@ -165,9 +173,11 @@ public class MainMenue implements Screen {
 		table.add(audioToggle).width(200).center().spaceBottom(15).height(50);
 		table.row();
 		table.add(visualToggle).width(200).center().spaceBottom(15).height(50);
+		table.row();
+		table.add(QuitToggle).width(150).center().spaceBottom(15).height(50);
 		batch=new SpriteBatch();		
 		Gdx.input.setInputProcessor(stage);
-
+        
 	}
 
 	@Override

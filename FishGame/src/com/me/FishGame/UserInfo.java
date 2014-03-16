@@ -83,13 +83,14 @@ public class UserInfo implements Screen {
 		ageText = new TextField("",skin);
 		//ageText.setPosition(Gdx.graphics.getWidth()/2+ (2*nameLabel.getWidth()),Gdx.graphics.getHeight()-(nameLabel.getHeight()*4) );
 		TextButton button = new TextButton("Play", skin);
+		TextButton quite=new TextButton("Quit", skin);
 		// button.setWidth(Gdx.graphics.getWidth()/4);
 		// button.setHeight(Gdx.graphics.getHeight()/10);
 		stage.addActor(nameLabel);
 		stage.addActor(nameText);
 		stage.addActor(ageLabel);
 		stage.addActor(ageText);
-
+		stage.addActor(quite);
 		stage.addActor(button);
 		//button.setPosition(Gdx.graphics.getWidth()/2,Gdx.graphics.getHeight()-(nameLabel.getHeight()*6+button.getHeight()));
 		button.addListener(new InputListener() {
@@ -108,6 +109,16 @@ public class UserInfo implements Screen {
 				return false;
 			}
 		});
+		
+			quite.addListener(new InputListener() {
+				public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+					
+					Gdx.app.exit();
+					Gdx.app.exit();
+					return false;
+		
+		}
+			});
 
 		table = new Table(skin);
 		table.setFillParent(true);
@@ -131,7 +142,8 @@ public class UserInfo implements Screen {
 		table.add(ageLabel).width(100);
 		table.add(ageText).width(200).spaceBottom(15);;
 		table.row();
-		table.add(button).width(300).colspan(2).center().height(50);
+		table.add(button).width(150).center().height(50);
+		table.add(quite).width(150).center().height(50);
 		table.row();
 
 		batch=new SpriteBatch();		
@@ -163,4 +175,5 @@ public class UserInfo implements Screen {
 		// TODO Auto-generated method stub
 
 	}
+	
 }

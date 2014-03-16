@@ -2,6 +2,7 @@ package com.me.FishGame;
 import java.io.IOException;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
@@ -15,9 +16,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer.ShapeType;
+import com.badlogic.gdx.input.GestureDetector;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
@@ -26,7 +29,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 public class GameView implements Screen {
 	public static SpriteBatch batch;
-	
+	MyGestureListener m;
 	ShapeRenderer sr;
 	Game game;
 	Music music;
@@ -52,6 +55,7 @@ public class GameView implements Screen {
 	String s;
 	public boolean response;
 	long delay=0L;
+	ImageButton boat1;
 	public boolean gameActive = false; // shouldn't this be in the model???
 	public Texture streamImage, streamImage2, fish1, boat, coin,treasure,fixationMark,bubble,gameOverimg;
 	Player p;
@@ -64,7 +68,7 @@ public class GameView implements Screen {
 	public int thisFrame = 12;
 	boolean printresult=false;
 	private FileHandle scriptHandle;
-
+	InputMultiplexer im;
 	public GameView(Game game, FileHandle scriptHandle,Player p){
 		this.game=game;
 		this.scriptHandle = scriptHandle;
@@ -110,9 +114,6 @@ public class GameView implements Screen {
 		}
 		batch.begin();
 		drawBackground(); // I have to think how to make it move in the oppsite side
-		
-		
-		
 		drawFish();
 		if (hasAvatar)
 			drawAvatar();
@@ -149,19 +150,17 @@ public class GameView implements Screen {
 		Q.setHeight(50);
 		Q.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()*4));
 	    stage.addActor(Q);
-	    Gdx.input.setInputProcessor(stage);
+	    Gdx.input.setInputProcessor(im);
 		Q.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
 				
 				Gdx.app.exit();
-			    
+				
 				return false;
 	
 	}
 		});
 	}
-
-
 
 	// handle the tilting of the tablet 
 	private  void handleAccelerometer(){
@@ -212,7 +211,6 @@ public class GameView implements Screen {
 		// TODO Auto-generated method stub
 
 	}
-
 	@Override
 	// like constructor in desktop model , this will call only ones 
 	public void show() {
@@ -225,7 +223,7 @@ public class GameView implements Screen {
 			e1.printStackTrace();
 			System.out.println("error");
 		}
-
+		
 		this.gm=new GameModel(gs,scriptHandle,p);
 		Fish.GAME_START = System.nanoTime();
 		gm.start();
@@ -251,14 +249,14 @@ public class GameView implements Screen {
 		stage.addActor(wrong);
 		stage.addActor(missed);
 		stage.addActor(total1);
-		
+		m=new MyGestureListener(gm);
+		 im = new InputMultiplexer(stage,new GestureDetector(m )); // Order matters here!
+		Gdx.input.setInputProcessor(im);
 	}
-
 	@Override
 	public void hide() {
 		// TODO Auto-generated method stub
-
-	}
+		}
 
 	@Override
 	public void pause() {
@@ -271,32 +269,25 @@ public class GameView implements Screen {
 		// TODO Auto-generated method stub
 
 	}
-
 	@Override
 	public void dispose() {
 
 	}
-
-
-
 	private void drawBackground() 
 	{
 		double seconds = System.nanoTime() / 1000000000.0;
 		double frames = seconds * 0.1;
 		double framePart = frames - Math.floor(frames);
 		int y_offset = (int) Math.round(framePart * height);
-
 		if (gm.isPaused() || gm.isGameOver()) {
 
 			if (gm.getNumFish() > 0) {
 				gm.removeLastFish();
 			}
-
 		}
 		if (gm.isGameOver()){
 			this.bgSound.stop();
 		}
-
 		// draw image on screen tiled
 		batch.draw(streamImage, 0, y_offset - height, width, height / 2 + 2);
 		batch.draw(streamImage2, 0, y_offset - height / 2, width,
@@ -330,7 +321,6 @@ public class GameView implements Screen {
 	private void drawActor( Fish aFish, Color c) {
 		if (!aFish.active)
 			return;
-
 		int x = toXViewCoords(aFish.x);
 		int y = toYViewCoords(aFish.y);
 		int visualHz = 1;
@@ -347,7 +337,6 @@ public class GameView implements Screen {
 		default:
 			break;
 		}
-
 		// handle the exception conditions...
 		if (gm.gameSpec.avmode == 1) { // auditory determines good/bad, so
 			// switch the visual hertz in
@@ -385,7 +374,6 @@ public class GameView implements Screen {
 		if (aFish.fromLeft) {
 			batch.draw(a1.getKeyFrame(thisFrame), x - theWidth / 2, y - theHeight / 2,
 					theWidth, theHeight);
-
 		} else {
 			TextureRegion tr=a2.getKeyFrame(thisFrame);
 
@@ -409,8 +397,6 @@ public class GameView implements Screen {
 		int frame = (int) (range * (y - (y % 0.04)));
 		return frame;
 	}
-
-
 	// method to adjust the size of the fish 
 	private int interpolateSize(double min, double max, long birth, long now,
 			double freq) {
@@ -426,7 +412,6 @@ public class GameView implements Screen {
 		return (int) Math.round(x / GameModel.SIZE * width);
 	}
 
-
 	public int toYViewCoords(double x) {
 		int height =Gdx.graphics.getHeight();
 		return (int) Math.round(x / GameModel.SIZE * height);
@@ -434,8 +419,7 @@ public class GameView implements Screen {
 
 	private void drawHud() 
 	{
-
-		sr.begin(ShapeType.Filled);
+        sr.begin(ShapeType.Filled);
 		sr.setColor(new Color(.75f,.75f,.25f,1f));
 		sr.rect(0, Gdx.graphics.getHeight()-140, 160, 40); //lower left money sign
 		sr.rect(0, Gdx.graphics.getHeight()-100, Gdx.graphics.getWidth(),100); //main rectangle
@@ -443,15 +427,10 @@ public class GameView implements Screen {
 		sr.triangle(Gdx.graphics.getWidth() - 160 , Gdx.graphics.getHeight()-140, Gdx.graphics.getWidth()-250, Gdx.graphics.getHeight()-100, Gdx.graphics.getWidth()-160, Gdx.graphics.getHeight()-100); //lower right triangle
 		sr.rect(Gdx.graphics.getWidth() - 160, Gdx.graphics.getHeight()-140, 160, 40); // lower right fish count
 		sr.end();
-	
-		
-		
 		batch.begin();
 		int displayScore=getScore();
 		int bagScore = displayScore;
-		
 		int xOffset = 20;
-		
 		while(bagScore > 500) {
 			batch.draw(treasure,xOffset , Gdx.graphics.getHeight()-90, 54, 50);
 			bagScore-=500;
@@ -464,27 +443,19 @@ public class GameView implements Screen {
 			xOffset += 35;
 		}
 		batch.draw(coin,xOffset,Gdx.graphics.getHeight()-90,30,(int)(40*(bagScore/100.0)));
-		
-		
-
 		 style=new LabelStyle(font,Color.BLACK);
 		 label.setStyle(style);
 		 label.setText("$" + displayScore+"");
 		 label.setPosition(10, Gdx.graphics.getHeight()-140);
 		 stage.addActor(label);
-		 
 		 fishCount.setText(gm.getFishSpawnedCount() + " Fish");
 		 fishCount.setPosition(Gdx.graphics.getWidth()-150,Gdx.graphics.getHeight()-140);
 		 stage.addActor(fishCount);
-		 
 		 batch.end();
-
-
 	}
     private int getScore(){
     	int score = gm.getScore();
 		int displayScore = score;
-		
 		long tickupStart = gm.getTickupStart();
 		long tickupEnd = tickupStart + 500;
 		long currentTime = System.currentTimeMillis();
@@ -505,9 +476,10 @@ public class GameView implements Screen {
 		int x = (Gdx.graphics.getWidth() - boat.getWidth()) / 2;
 		int y = 0-boat.getHeight()/2;
 		batch.draw(boat, x, y, boat.getWidth(), boat.getHeight());
+	    m.m=boat.getWidth();
+	    m.n=boat.getHeight();
+	    
 	}
-
-
 	private void updateGameState(GameSpec gs) 
 	{
 
@@ -517,27 +489,20 @@ public class GameView implements Screen {
 		}
 
 		goodclip = Gdx.audio.newSound(Gdx.files.internal(gs.goodResponseSound));
-
 		goodclipfile=gs.goodResponseSound;
-
 		badclip = Gdx.audio.newSound(Gdx.files.internal(gs.badResponseSound));
 		badclipfile=gs.badResponseSound;
 		// here we read in the background image which tiles the scene
 		try {
 			streamImage =new Texture(Gdx.files.internal(gs.backgroundImage));
 			gameOverimg=new Texture(Gdx.files.internal("images/0053.jpg"));
-
 			streamImage2 = new Texture(Gdx.files.internal("images/streamB2.jpg"));
-
 			boat = new Texture(Gdx.files.internal("images/boat1.png"));
-
 			fish1 = new Texture(Gdx.files.internal("images/fish/fish.png"));
 			fishL = spriteImageArray(fish1, 5, 5);
 			fishR = flibHorizantly(fish1, 5, 5);
-
 			coin = new Texture(Gdx.files.internal("images/money_bag.png"));
 			treasure = new Texture(Gdx.files.internal("images/treasurechest.png"));
-			
 			hasAvatar = gs.hasAvatar;
 			if (!gs.bgSound.equals(this.lastbgSound)) {
 				this.lastbgSound = gs.bgSound;
@@ -546,15 +511,12 @@ public class GameView implements Screen {
 				bgSound =  Gdx.audio.newMusic(Gdx.files.internal(gs.bgSound));
 				bgSound.setLooping(true);
 				bgSound.play();
-
 			}
 		} catch (Exception e) {
 			System.out.println("can't find background images" + e);
 		}
 
 	}
-
-
 	private void drawTimeBar() 
 	{
 		sr.begin(ShapeType.Filled);
@@ -565,14 +527,10 @@ public class GameView implements Screen {
 		sr.end();
 		// TODO Auto-generated method stub	
 	}
-
-
-
 	private void updateScore()
 	{
 		style=new LabelStyle(font,Color.BLUE);
 		label.setStyle(style);	 
-
 	}
 
 	// this method to split the image to multiple images 
