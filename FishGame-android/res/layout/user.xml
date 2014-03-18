@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+  
+    android:layout_marginTop="10dp"
+    android:orientation="vertical"
+    android:background="@drawable/background"
+     >
+     <TextView
+      android:layout_width="300dp"
+      android:layout_height="wrap_content"
+      android:text="Welcome to Fish Police!"
+      android:textSize="25dp"
+      android:textStyle="bold"
+        android:layout_gravity="center"
+      />
+    <EditText android:id="@+id/init"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+          android:layout_gravity="center"
+        android:hint="Initial" />
+    <EditText android:id= "@+id/age"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:inputType="number"
+        android:hint="Age" />
+    <RadioGroup  
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+   android:checkedButton="@+id/radio_audio"
+    >
+    <RadioButton android:id="@+id/radio_audio"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:text="Audio"
+            android:layout_gravity="center"
+       />
+    <RadioButton  android:id="@+id/radio_visual"
+        android:layout_height="wrap_content"
+        android:text="Visual"
+        android:layout_width="250dp"
+        android:layout_gravity="center"
+         />
+</RadioGroup>
+   
+    <Button
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Next"
+        android:onClick="startPlaying"
+         />
+</LinearLayout>

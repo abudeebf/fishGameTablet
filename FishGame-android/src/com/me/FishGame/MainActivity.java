@@ -3,6 +3,7 @@
 	package com.me.FishGame;
 
 	import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Window;
@@ -18,13 +19,17 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	   //     requestWindowFeature(Window.FEATURE_NO_TITLE);
+	        Intent intent = getIntent();
 	        getWindow().getDecorView().setSystemUiVisibility(8);
 	        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);// to make the screen active all the time
 	        AndroidApplicationConfiguration cfg = new AndroidApplicationConfiguration();
 	        cfg.useGL20 = false;
-	       
+	     
+			String init = intent.getStringExtra(SplashScreen.init);
+		String	 age=intent.getStringExtra(SplashScreen.age);
+		String	 mode=intent.getStringExtra(SplashScreen.mode);
 
-	        initialize(new FishGame(), cfg);
+	        initialize(new FishGame(init,age,mode), cfg);
 	    }
 	    @SuppressLint("NewApi")
 		public void onResume(Bundle savedInstanceState) {
