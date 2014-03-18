@@ -25,9 +25,9 @@ public class MyGestureListener implements GestureListener {
     	py=0-n/2;
     	py=(-1)*py;
     
-		//Gdx.app.log("fatima", " count yay " +count);
+		Gdx.app.log("fatima", " count yay " +count);
 		
-		//Gdx.app.log("fatima", " " +x + "," +y + ","+"px+m=" + (px+m/2) + ",py+n="+(n+py) +",py="+py+ ","+ "px" + px);
+		Gdx.app.log("fatima", " " +x + "," +y + ","+"px+m=" + (px+m/2) + ",py+n="+(n+py) +",py="+py+ ","+ "px" + px);
 		 if ( (x>=px && x<=px+m) && (y>=py && y<=(n+py) ))
 	    if (count>2){
 	    	

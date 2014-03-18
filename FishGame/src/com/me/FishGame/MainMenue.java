@@ -36,7 +36,7 @@ public class MainMenue implements Screen {
 	TextureAtlas buttonAtlas;
 	TextButtonStyle buttonStyle;
 	TextButton button;
-	TextButton audioToggle,visualToggle,QuitToggle;
+	TextButton fastToggle,slowToggle,StartToggle,QuitToggle;
 	CheckBoxStyle checkStyle;
 	Skin skin;
 	SpriteBatch batch;
@@ -46,17 +46,21 @@ public class MainMenue implements Screen {
 	String dwnload_file_path,dest_file_path;
 	boolean vGame;
 	public static FileHandle scan;
-	public static FileHandle audioFileHandle,visualFileHandle;
+	public static FileHandle audioFileHandle,visualFileHandle, file;
+	
 	private Texture splashTexture;
 
 
 	public static String versionNum = "3";
-
-	public MainMenue(Game game)
+	  String init,age,mode;
+	public MainMenue(Game game, String init, String age , String mode)
 	{
 		double x=Double.parseDouble("-61");
 		System.out.print(x);
 		this.game=game;
+		this.init=init;
+		this.age=age;
+		this.mode=mode;
 	}
 
 
@@ -73,9 +77,12 @@ public class MainMenue implements Screen {
 	}
 	public FileHandle returnScan()
 	{
-		if(vGame) {
+		if(mode.equals("Audio")) {
+			vGame=false;
 			return audioFileHandle;
+			
 		} else {
+			vGame=true;
 			return visualFileHandle;
 		}
 
@@ -133,48 +140,71 @@ public class MainMenue implements Screen {
 		skin=new Skin(Gdx.files.internal("data/uiskin.json"));
 		 // to know if mouse over or not 
 		Table table=new Table();
-		audioToggle = new TextButton("Play Audio",skin);
-		stage.addActor(audioToggle);
-		audioToggle.addListener(new InputListener(){
+		 file=returnScan();
+		fastToggle = new TextButton("Try Good Fish",skin);
+		stage.addActor(fastToggle);
+		fastToggle.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
-				vGame = false;
 				
-				game.setScreen(new UserInfo(game,audioFileHandle,vGame)); 
+				
+				Player p=new Player(init,vGame,0,Integer.parseInt(age));
+				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"tryGoodAudio.txt","tryGoodAudio.txt");
+				game.setScreen(new GameView(game,script,p));
 				return true;
 			}
 		});
 
-		visualToggle = new TextButton("Play Visual",skin);
-		stage.addActor(visualToggle);
-		visualToggle.addListener(new InputListener(){
+		slowToggle = new TextButton("Try Bad Fish",skin);
+		stage.addActor(slowToggle);
+		slowToggle.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
-				vGame = true;
-				game.setScreen(new UserInfo(game,visualFileHandle,vGame)); 
+				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"trybadAudio.txt","trybadAudio.txt");
+				Player p=new Player(init,vGame,0,Integer.parseInt(age));
+				game.setScreen(new GameView(game,script,p));
+				return true;
+			}
+		});
+		StartToggle = new TextButton("Start Playing",skin);
+		stage.addActor(StartToggle);
+		StartToggle.addListener(new InputListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
+				
+				Player p=new Player(init,vGame,0,Integer.parseInt(age));
+				game.setScreen(new GameView(game,file,p));
 				return true;
 			}
 		});
 		QuitToggle = new TextButton("Quit",skin);
 		stage.addActor(QuitToggle);
-		QuitToggle.addListener(new InputListener(){
-			@Override
-			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
+		QuitToggle.addListener(new InputListener() {
+			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+				
 				Gdx.app.exit();
-				return true;
-			}
+				Gdx.app.exit();
+				return false;
+	
+	}
 		});
 		stage.addActor(table);
 		table.setFillParent(true);
-		Label welcome=new Label("Welecome to Fish Police! \n Please Choose the mode you want to play",skin);
+		Label welcome;
+		if (vGame)
+		 welcome=new Label("Welecome to Fish Police! Visual Mode " + init +"\n Please choose one of the following",skin);
+		else
+			 welcome=new Label("Welecome to Fish Police! Audio Mode " + init +"\n Please choose one of the following",skin);
 		stage.addActor(welcome);
 		table.add(welcome).width(300).colspan(2).center().height(50).spaceBottom(10);
 		table.row();
-		table.add(audioToggle).width(200).center().spaceBottom(15).height(50);
+		table.add(fastToggle).width(150).center().spaceBottom(15).height(50);
 		table.row();
-		table.add(visualToggle).width(200).center().spaceBottom(15).height(50);
+		table.add(slowToggle).width(150).center().spaceBottom(15).height(50);
 		table.row();
-		table.add(QuitToggle).width(150).center().spaceBottom(15).height(50);
+		table.add(StartToggle).width(200).center().spaceBottom(15).height(50);
+		table.row();
+		table.add(QuitToggle).width(100).center().spaceBottom(15).height(50);
 		batch=new SpriteBatch();		
 		Gdx.input.setInputProcessor(stage);
         
@@ -200,6 +230,7 @@ public class MainMenue implements Screen {
 
 	@Override
 	public void dispose() {
+		
 		Gdx.app.exit();
 	}
 

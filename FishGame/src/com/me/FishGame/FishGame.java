@@ -5,13 +5,20 @@ import com.badlogic.gdx.Gdx;
 // this the first class that runs the program
 public class FishGame extends Game {
 	Game game;
-
-
+    String init,age,mode;
+    public FishGame(){
+    	
+    }
+   public FishGame(String init, String age , String mode){
+	  this. init=init;
+	  this. age=age;
+	 this.  mode=mode;
+   }
 	@Override
 	public void create() 
 	{	
 		game=this;
-		setScreen(new MainMenue(game));
+		setScreen(new MainMenue(game,init,age, mode));
 
 	}
 

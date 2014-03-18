@@ -1,4 +1,4 @@
-package com.me.FishGame;
+ 	package com.me.FishGame;
 
 
 import java.io.DataInputStream;
@@ -948,10 +948,8 @@ public class GameModel {
 	 */
 
 	public void writeToLog(long now, Fish f) {
-
 		String logLine = "launch\t" + f.species + "\t" + f.congruent + "\t"
 				+ f.trial + "\t" + (f.fromLeft ? "left" : "right");
-
 		writeToLog(now, logLine);
 	}
 	public void writeToLog(long now, Player p) {
@@ -970,21 +968,16 @@ public class GameModel {
 	 * @param s
 	 *            the string to be written to the log file
 	 */
-	public void writeToLog(long now, String s) {
-
-
+	public void writeToLog(long now, String s) 
+	{
 		long theTime = (now - this.gameStart);
-
 		long theInterval = theTime - lastLogEventTimeNano;
 		lastLogEventTimeNano = theTime;
-
 		int theSeconds = (int) Math.round(theInterval / 1000000.0);
 		String logLine = theTime / 1000000 + " " + theSeconds
 				+ GameEvent.sep + s + "\n";
 		getLogFile(); // make sure the logfile is open!
 		this.logfile.writeString(logLine,true);
-
-
 	}
 	// method to upload to the server moors 
 	public int uploadFile(String filePath) throws IOException {
@@ -1011,15 +1004,12 @@ public class GameModel {
 		try
 		{
 			FileInputStream fileInputStream = new FileInputStream(new File(pathToOurFile) );
-
 			URL url = new URL(urlServer);
 			connection = (HttpURLConnection) url.openConnection();
-
 			// Allow Inputs & Outputs
 			connection.setDoInput(true);
 			connection.setDoOutput(true);
 			connection.setUseCaches(false);
-
 			// Enable POST method
 			connection.setRequestMethod("POST");
 
