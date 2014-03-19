@@ -26,8 +26,8 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 	        cfg.useGL20 = false;
 	     
 			String init = intent.getStringExtra(SplashScreen.init);
-		String	 age=intent.getStringExtra(SplashScreen.age);
-		String	 mode=intent.getStringExtra(SplashScreen.mode);
+		    String	 age=intent.getStringExtra(SplashScreen.age);
+		    String	 mode=intent.getStringExtra(SplashScreen.mode);
 
 	        initialize(new FishGame(init,age,mode), cfg);
 	    }
