@@ -13,13 +13,14 @@ public class FishGame extends Game {
 	  this. init=init;
 	  this. age=age;
 	 this.  mode=mode;
+	 game=this;
+	setScreen(new MainMenue(game,init,age, mode));
+
    }
 	@Override
 	public void create() 
 	{	
-		game=this;
-		setScreen(new MainMenue(game,init,age, mode));
-
+		
 	}
 
 	@Override
@@ -30,8 +31,9 @@ public class FishGame extends Game {
 
 	@Override
 	public void render()
-	{	Gdx.graphics.setTitle("Fish Police!");
-	super.render();
+	{	
+		Gdx.graphics.setTitle("Fish Police!");
+		super.render();
 
 	}
 

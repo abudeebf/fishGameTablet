@@ -261,17 +261,17 @@ public class GameView implements Screen {
 	@Override
 	public void pause() {
 		// TODO Auto-generated method stub
-
+		Gdx.app.exit();
 	}
 
 	@Override
 	public void resume() {
 		// TODO Auto-generated method stub
-
+		Gdx.app.exit();
 	}
 	@Override
 	public void dispose() {
-
+		Gdx.app.exit();
 	}
 	private void drawBackground() 
 	{

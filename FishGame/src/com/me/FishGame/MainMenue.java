@@ -45,18 +45,17 @@ public class MainMenue implements Screen {
 	Sound sound;
 	String dwnload_file_path,dest_file_path;
 	boolean vGame;
-	public static FileHandle scan;
-	public static FileHandle audioFileHandle,visualFileHandle, file;
+	public  FileHandle scan;
+	public  FileHandle audioFileHandle,visualFileHandle, file;
 	
 	private Texture splashTexture;
 
 
-	public static String versionNum = "3";
+//	public static String versionNum = "3";
 	  String init,age,mode;
 	public MainMenue(Game game, String init, String age , String mode)
 	{
-		double x=Double.parseDouble("-61");
-		System.out.print(x);
+		
 		this.game=game;
 		this.init=init;
 		this.age=age;
@@ -125,7 +124,7 @@ public class MainMenue implements Screen {
 	@Override
 	// this will call only one  
 	public void show() 
-	{
+	{  
 		Texture.setEnforcePotImages(false);
 		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_Audio.txt";
 		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_1388666174820.txt";
@@ -181,9 +180,9 @@ public class MainMenue implements Screen {
 		stage.addActor(QuitToggle);
 		QuitToggle.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+			   Gdx.app.exit();
+			   
 				
-				Gdx.app.exit();
-				Gdx.app.exit();
 				return false;
 	
 	}
@@ -213,26 +212,28 @@ public class MainMenue implements Screen {
 	@Override
 	public void hide() {
 
-
+		
 	}
 
 	@Override
 	public void pause() {
-
+	
+    Gdx.app.exit();
 
 	}
 
 	@Override
 	public void resume() {
-
+		
+		 Gdx.app.exit();
 
 	}
 
 	@Override
 	public void dispose() {
 		
-		Gdx.app.exit();
-	}
+		 Gdx.app.exit();
+		}
 
 
 }
