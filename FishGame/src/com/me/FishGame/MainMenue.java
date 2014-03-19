@@ -97,22 +97,15 @@ public class MainMenue implements Screen {
 	public FileHandle downloadFile(String url, String dest_file_path) 
 	{
 		try {
-
 			URL u = new URL(url);
 			URLConnection conn = u.openConnection();
 			int contentLength = conn.getContentLength();
-
 			DataInputStream stream = new DataInputStream(u.openStream());
-
 			byte[] buffer = new byte[contentLength];
 			stream.readFully(buffer);
 			stream.close();
 			scan = Gdx.files.external(dest_file_path);
-
-			System.out.println( Gdx.files.getExternalStoragePath());
 			scan.writeBytes(buffer,false);
-
-
 			return scan;
 		} catch(Exception e) {
 			System.out.println(e);
@@ -127,9 +120,9 @@ public class MainMenue implements Screen {
 	{  
 		Texture.setEnforcePotImages(false);
 		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_Audio.txt";
-		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_1388666174820.txt";
+		//dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_1388666174820.txt";
 		dest_file_path = "scriptv3_Audio.txt";
-		dest_file_path = "scriptv3_1388666174820.txt";
+		//dest_file_path = "scriptv3_1388666174820.txt";
 		audioFileHandle = downloadFile(dwnload_file_path,dest_file_path);
 		dwnload_file_path = "http://moore.cs-i.brandeis.edu/Scripts/scriptv3_visual.txt";
 		dest_file_path = "scriptv3_visual.txt";
@@ -145,11 +138,9 @@ public class MainMenue implements Screen {
 		fastToggle.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
-				
-				
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
 				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"tryGoodAudio.txt","tryGoodAudio.txt");
-				game.setScreen(new GameView(game,script,p));
+				game.setScreen(new GameView(game,script,p,false));
 				return true;
 			}
 		});
@@ -161,7 +152,7 @@ public class MainMenue implements Screen {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
 				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"trybadAudio.txt","trybadAudio.txt");
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
-				game.setScreen(new GameView(game,script,p));
+				game.setScreen(new GameView(game,script,p,false));
 				return true;
 			}
 		});
@@ -172,7 +163,7 @@ public class MainMenue implements Screen {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
 				
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
-				game.setScreen(new GameView(game,file,p));
+				game.setScreen(new GameView(game,file,p,true));
 				return true;
 			}
 		});
@@ -180,11 +171,8 @@ public class MainMenue implements Screen {
 		stage.addActor(QuitToggle);
 		QuitToggle.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-			   Gdx.app.exit();
-			   
-				
-				return false;
-	
+			   Gdx.app.exit(); // this will call pause method
+			   return true;
 	}
 		});
 		stage.addActor(table);
@@ -210,25 +198,21 @@ public class MainMenue implements Screen {
 	}
 
 	@Override
-	public void hide() {
-
-		
+	public void hide() {	
 	}
 
 	@Override
 	public void pause() {
 	
-    Gdx.app.exit();
+    Gdx.app.exit(); // this will call resume 
 
 	}
-
 	@Override
 	public void resume() {
 		
-		 Gdx.app.exit();
+		 Gdx.app.exit(); // so that is why I put this here 
 
 	}
-
 	@Override
 	public void dispose() {
 		

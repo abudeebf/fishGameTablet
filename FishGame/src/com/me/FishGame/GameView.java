@@ -69,10 +69,12 @@ public class GameView implements Screen {
 	boolean printresult=false;
 	private FileHandle scriptHandle;
 	InputMultiplexer im;
-	public GameView(Game game, FileHandle scriptHandle,Player p){
+	boolean playable ;
+	public GameView(Game game, FileHandle scriptHandle,Player p,boolean playable){
 		this.game=game;
 		this.scriptHandle = scriptHandle;
 		this.p=p;
+		this.playable=playable;
 	}
 	// this method is same as paint method in desktop version 
 	// this called multiple time 
@@ -83,8 +85,11 @@ public class GameView implements Screen {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL10.GL_COLOR_BUFFER_BIT);
 		if (gm.isGameOver() ) {
+			
 			this.bgSound.stop();
-			batch.begin();
+			if(playable)
+			{batch.begin();
+		
 			gameOverWindow(s);
 			batch.end();
 			stage.draw();
@@ -112,6 +117,14 @@ public class GameView implements Screen {
 			return;
 
 		}
+			else
+				if ( p.vmode)
+				game.setScreen(new MainMenue(game,p.intial,p.age+"","Visual"));
+				else
+					game.setScreen(new MainMenue(game,p.intial,p.age+"","Audio"));
+					
+			}
+		
 		batch.begin();
 		drawBackground(); // I have to think how to make it move in the oppsite side
 		drawFish();

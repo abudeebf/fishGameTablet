@@ -99,7 +99,8 @@ public class UserInfo implements Screen {
 				{
 					Gdx.input.setOnscreenKeyboardVisible(false);
 					Player p=new Player(nameText.getText(),vmode,0,Integer.parseInt(ageText.getText()));
-					game.setScreen(new GameView(game,scriptHandle,p)); }
+				//	game.setScreen(new GameView(game,scriptHandle,p));
+					}
 				else
 				{
 
