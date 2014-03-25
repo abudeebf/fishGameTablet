@@ -70,11 +70,13 @@ public class GameView implements Screen {
 	private FileHandle scriptHandle;
 	InputMultiplexer im;
 	boolean playable ;
-	public GameView(Game game, FileHandle scriptHandle,Player p,boolean playable){
+	boolean equity;
+	public GameView(Game game, FileHandle scriptHandle,Player p,boolean playable,boolean equity){
 		this.game=game;
 		this.scriptHandle = scriptHandle;
 		this.p=p;
 		this.playable=playable;
+		this.equity=equity;
 	}
 	// this method is same as paint method in desktop version 
 	// this called multiple time 
@@ -119,9 +121,9 @@ public class GameView implements Screen {
 		}
 			else
 				if ( p.vmode)
-				game.setScreen(new MainMenue(game,p.intial,p.age+"","Visual"));
+				game.setScreen(new MainMenue(game,p.intial,p.age+"","Visual",equity));
 				else
-					game.setScreen(new MainMenue(game,p.intial,p.age+"","Audio"));
+					game.setScreen(new MainMenue(game,p.intial,p.age+"","Audio",equity));
 					
 			}
 		

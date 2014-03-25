@@ -61,7 +61,12 @@ public class GameModel {
 	 * sound, the sound files for the good and bad fish, etc.
 	 */
 	public GameSpec gameSpec;
-
+	 public String[] minBrightness=new String[3];
+	    public String [] maxBrightness=new String[3];
+	    public String[]minSize=new String[3];
+	    public String[] maxSize=new String[3];
+	    public int[]goodEquity=new int[3];
+	    public int[] badEquity=new int[3];
 	// here are some convenient constants for converting between nanoseconds
 	// and milliseconds and seconds
 	private static long million = 1000000L;
@@ -470,7 +475,14 @@ public class GameModel {
 		// storing the info about that fish in this.nextFish
 		// and setting this.nextFishTime
 		// Note: this does not launch the fish!
-
+		 if( gameSpec.Equity && ge.correctResponse)
+	        {
+	        	if(lastFish.species.equals(Species.bad))
+	        		badEquity[Integer.parseInt(lastFish.equityN)-1]+=1;
+	        	else
+	        		goodEquity[Integer.parseInt(lastFish.equityN)-1]+=1;
+	        	
+	        }
 		this.createNextFish(ge.when); //
 
 		// get the response time, in nanoseconds, and write it to the log
@@ -552,7 +564,10 @@ public class GameModel {
 		}
 
 		if ( isGameOver() && printresult==false){
-
+			if(gameSpec.Equity){
+				//writeEquityStat();
+				
+			}
 		}
 
 		// these variables are used by the GameView class
@@ -728,7 +743,9 @@ public class GameModel {
 		System.out.println("congruent="+nextFish.congruent);
 		System.out.println("species="+nextFish.species);
 		System.out.println("clip="+clip);
-
+		if (gameSpec.Equity==false || gameSpec.avmode==0)
+		{
+			
 		// set the appropriate AudioClip
 		if (!gameSpec.stereo)
 			nextFish.ct = Gdx.audio.newSound(Gdx.files.internal(clip + "/fish.wav"));
@@ -736,8 +753,16 @@ public class GameModel {
 		else if (nextFish.fromLeft)
 			nextFish.ct = Gdx.audio.newSound(Gdx.files.internal(clip + "/fishL.wav"));
 		else
-			nextFish.ct = Gdx.audio.newSound(Gdx.files.internal(clip + "/fishR.wav"));
-
+			nextFish.ct = Gdx.audio.newSound(Gdx.files.internal(clip + "/fishR.wav"));}
+		else{
+			if (!gameSpec.stereo)
+				nextFish.ct = Gdx.audio.newSound(Gdx.files.internal(clip + "/fish" + nextFish.equityN+".wav"));
+			    
+			else if (nextFish.fromLeft)
+				nextFish.ct = Gdx.audio.newSound(Gdx.files.internal(clip + "/fishL" + nextFish.equityN+".wav"));
+			else
+				nextFish.ct = Gdx.audio.newSound(Gdx.files.internal(clip + "/fishR" + nextFish.equityN+".wav"));
+		}
 		/*
 		 * 
 		 */
@@ -812,7 +837,7 @@ public class GameModel {
 		String fromLeft = scriptinfo.get(0).split("\\s+")[5];
 
 		String species = scriptinfo.get(0).split("\\s+")[6];
-
+		String EquityN=scriptinfo.get(0).split("\\s+")[7];;
 		scriptinfo.remove(0); // skip over the rest of the line
 
 		// create the next Fish to be launched
@@ -823,11 +848,18 @@ public class GameModel {
 		nextFish.trial = trialnum; 
 		nextFish.species = (species.equals("good")) ? Species.good
 				: Species.bad;
+		 nextFish.equityN=EquityN;
 		nextFish.active = true;
 		nextFish.lastUpdate = now;
 
 		nextFishTime = now + interval * million;
-
+		if(gameSpec.avmode==0 && gameSpec.Equity==true)
+		{
+			nextFish.minBright=Integer.parseInt(minBrightness[Integer.parseInt(EquityN)-1]);
+			nextFish.maxBright=Integer.parseInt(maxBrightness[Integer.parseInt(EquityN)-1]);
+			nextFish.minSize=Integer.parseInt(minSize[Integer.parseInt(EquityN)-1]);
+			nextFish.maxSize=Integer.parseInt(maxSize[Integer.parseInt(EquityN)-1]);
+		}
 		
 	}
 
@@ -844,6 +876,7 @@ public class GameModel {
 		long now = System.nanoTime();
 		String prop = scriptinfo.get(0).split("\\s+")[1];
 		String value = scriptinfo.get(0).split("\\s+")[2];
+		
 		scriptinfo.remove(0); // skip over the rest of the line
 		writeToLog(now, "0\t" + prop + "\t" + value);
 		if (prop.equals("gameover")) {

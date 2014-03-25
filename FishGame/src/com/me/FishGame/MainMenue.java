@@ -47,19 +47,20 @@ public class MainMenue implements Screen {
 	boolean vGame;
 	public  FileHandle scan;
 	public  FileHandle audioFileHandle,visualFileHandle, file;
-	
+	private boolean equity;
 	private Texture splashTexture;
 
 
 //	public static String versionNum = "3";
 	  String init,age,mode;
-	public MainMenue(Game game, String init, String age , String mode)
+	public MainMenue(Game game, String init, String age , String mode, boolean equity)
 	{
 		
 		this.game=game;
 		this.init=init;
 		this.age=age;
 		this.mode=mode;
+		this.equity=equity;
 	}
 
 
@@ -78,10 +79,16 @@ public class MainMenue implements Screen {
 	{
 		if(mode.equals("Audio")) {
 			vGame=false;
+			if(equity)
+				return downloadFile("xxx","");
+			else
 			return audioFileHandle;
 			
 		} else {
 			vGame=true;
+			if(equity)
+				return downloadFile("xxx","");
+			else
 			return visualFileHandle;
 		}
 
@@ -140,7 +147,7 @@ public class MainMenue implements Screen {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
 				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"tryGoodAudio.txt","tryGoodAudio.txt");
-				game.setScreen(new GameView(game,script,p,false));
+				game.setScreen(new GameView(game,script,p,false,equity));
 				return true;
 			}
 		});
@@ -152,7 +159,7 @@ public class MainMenue implements Screen {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
 				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"trybadAudio.txt","trybadAudio.txt");
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
-				game.setScreen(new GameView(game,script,p,false));
+				game.setScreen(new GameView(game,script,p,false,equity));
 				return true;
 			}
 		});
@@ -163,7 +170,7 @@ public class MainMenue implements Screen {
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
 				
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
-				game.setScreen(new GameView(game,file,p,true));
+				game.setScreen(new GameView(game,file,p,true,equity));
 				return true;
 			}
 		});

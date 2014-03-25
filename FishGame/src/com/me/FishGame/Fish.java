@@ -89,6 +89,7 @@ public class Fish {
 	 * true if the fish is launched from the left (rather than the right)
 	 */
 	public boolean fromLeft; 
+	public String equityN;
 	
 	/**
 	 * true if the fish audio and video cues have the same oscillation frequency
@@ -147,6 +148,10 @@ public class Fish {
 	public int avmode = 0;
 
 	
+	public int minBright=0;
+	public int maxBright=0;
+	public int minSize=0;
+	public int maxSize=0;
 
 	public java.util.Random rand = new java.util.Random();
 
@@ -159,9 +164,11 @@ public class Fish {
 				+ fromLeft + ",congruent=" + congruent + 
 				",trial=" + trial + ",birthtime=" + birthTime
 				+ ",lastUpdate=" + lastUpdate + ",lifeSpan="  + lifeSpan + "]";
-
+    
 	}
-
+    public String toString(String str){
+    	return toString()+ " Equity#= " + equityN +",minBright = " + minBright+", maxBright= " +maxBright +",minSize= "+ minSize+", maxSize= "+maxSize;
+    }
 	/**
 	 * actors change their velocity slightly at every step but their speed
 	 * remains the same. Update slightly modifies their velocity and uses that

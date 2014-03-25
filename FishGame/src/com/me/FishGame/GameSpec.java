@@ -21,7 +21,7 @@ public class GameSpec {
 
 	public boolean changed = true;
 	public boolean requireGameViewUpdate = true;
-
+    public boolean Equity;
 	public boolean stereo = true;
 
 	/** 

@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 public class FishGame extends Game {
 	Game game;
     String init,age,mode;
+    boolean equity=false;
     public FishGame(){
     	
     }
@@ -15,11 +16,18 @@ public class FishGame extends Game {
 	 this.  mode=mode;
 	
    }
+   public FishGame(String init, String age , String mode,String equity){
+		  this. init=init;
+		  this. age=age;
+		 this.  mode=mode;
+		 this.equity=true;
+		
+	   }
 	@Override
 	public void create() 
 	{	
 		 game=this;
-			setScreen(new MainMenue(game,init,age, mode));
+			setScreen(new MainMenue(game,init,age, mode,equity));
 
 	}
 
