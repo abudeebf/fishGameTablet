@@ -48,8 +48,8 @@ public class MainMenue implements Screen {
 	public  FileHandle scan;
 	public  FileHandle audioFileHandle,visualFileHandle, file;
 	private boolean equity;
-	private Texture splashTexture;
-
+	private Texture splashTexture; 
+	String servername="http://moore.cs-i.brandeis.edu/Scripts/";
 
 //	public static String versionNum = "3";
 	  String init,age,mode;
@@ -77,17 +77,18 @@ public class MainMenue implements Screen {
 	}
 	public FileHandle returnScan()
 	{
+		
 		if(mode.equals("Audio")) {
 			vGame=false;
 			if(equity)
-				return downloadFile("xxx","");
+			 return downloadFile(servername+"audioEquity.txt","audioEquity.txt");
 			else
 			return audioFileHandle;
 			
 		} else {
 			vGame=true;
 			if(equity)
-				return downloadFile("xxx","");
+				return downloadFile(servername+"visualEquity.txt","visualEquity.txt");
 			else
 			return visualFileHandle;
 		}
@@ -139,14 +140,14 @@ public class MainMenue implements Screen {
 		skin=new Skin(Gdx.files.internal("data/uiskin.json"));
 		 // to know if mouse over or not 
 		Table table=new Table();
-		 file=returnScan();
+		file=returnScan();
 		fastToggle = new TextButton("Try Good Fish",skin);
 		stage.addActor(fastToggle);
 		fastToggle.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
-				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"tryGoodAudio.txt","tryGoodAudio.txt");
+				FileHandle script=downloadFile(servername+"tryGood"+mode+".txt","tryGood"+mode+".txt");
 				game.setScreen(new GameView(game,script,p,false,equity));
 				return true;
 			}
@@ -157,7 +158,8 @@ public class MainMenue implements Screen {
 		slowToggle.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
-				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"trybadAudio.txt","trybadAudio.txt");
+				FileHandle script=downloadFile(servername+"trybad"+mode+ ".txt","trybad"+mode+ ".txt"
+						);
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
 				game.setScreen(new GameView(game,script,p,false,equity));
 				return true;

@@ -565,7 +565,7 @@ public class GameModel {
 
 		if ( isGameOver() && printresult==false){
 			if(gameSpec.Equity){
-				//writeEquityStat();
+				writeEquityStat();
 				
 			}
 		}
@@ -837,7 +837,13 @@ public class GameModel {
 		String fromLeft = scriptinfo.get(0).split("\\s+")[5];
 
 		String species = scriptinfo.get(0).split("\\s+")[6];
-		String EquityN=scriptinfo.get(0).split("\\s+")[7];;
+		String EquityN;
+try {
+	EquityN	=scriptinfo.get(0).split("\\s+")[7];;
+}
+catch(Exception e){
+	EquityN=" "+0;
+}
 		scriptinfo.remove(0); // skip over the rest of the line
 
 		// create the next Fish to be launched
@@ -848,7 +854,7 @@ public class GameModel {
 		nextFish.trial = trialnum; 
 		nextFish.species = (species.equals("good")) ? Species.good
 				: Species.bad;
-		 nextFish.equityN=EquityN;
+		nextFish.equityN=EquityN;
 		nextFish.active = true;
 		nextFish.lastUpdate = now;
 
@@ -876,7 +882,25 @@ public class GameModel {
 		long now = System.nanoTime();
 		String prop = scriptinfo.get(0).split("\\s+")[1];
 		String value = scriptinfo.get(0).split("\\s+")[2];
-		
+		int i=3;
+		if(prop.equals("minBrightnesslevels")|| prop.equals("maxBrightnesslevels")|| (prop.equals("minSizelevels")) || (prop.equals("maxSizelevels"))){
+			while (value.indexOf(']')==-1){
+				value+=scriptinfo.get(0).split("\\s+")[i];
+				i++;
+			}
+			scriptinfo.remove(0);
+			writeToLog(now, "0\t" + prop + "\t" + value);
+				if (prop.equals("minBrightnesslevels")) 
+					minBrightness=(value.replace("[", "").replace("]", "")).split(",");
+				else if	(prop.equals("maxBrightnesslevels")) 
+					maxBrightness=value.replace("[", "").replace("]", "").split(",");
+				else  if	(prop.equals("minSizelevels")) 
+					minSize=value.replace("[", "").replace("]", "").split(",");
+				else if	(prop.equals("maxSizelevels")) 
+					maxSize=value.replace("[", "").replace("]", "").split(",");
+				interval = Long.parseLong(scriptinfo.get(0).split("\\s+")[0]);
+				return interval;
+			}
 		scriptinfo.remove(0); // skip over the rest of the line
 		writeToLog(now, "0\t" + prop + "\t" + value);
 		if (prop.equals("gameover")) {
@@ -979,11 +1003,34 @@ public class GameModel {
 	 * REFACTOR: we might want to make this a separate class too since it
 	 * doesn't really affect the model.
 	 */
-
+	 private void writeEquityStat() 
+	    {
+	    	String logLine="Equity Statistics \n";
+	    	logLine+="Species \t Equity# \t accuracy \n";
+	    	for (int i=0; i<goodEquity.length;i++)
+	    		logLine+="Good   \t"+ (i+1)+"      \t" +((goodEquity[i])/(gameSpec.numNeutral/(2*5.0))) +"\n";
+	    	for (int i=0; i<badEquity.length;i++)
+	    		logLine+="bad    \t"+ (i+1)+"      \t" +(badEquity[i]/(gameSpec.numNeutral/(2*5.0))) +"\n";
+	    	this.logfile.writeString(logLine,true);
+			System.out.println(logLine);
+			
+	    }
 	public void writeToLog(long now, Fish f) {
-		String logLine = "launch\t" + f.species + "\t" + f.congruent + "\t"
-				+ f.trial + "\t" + (f.fromLeft ? "left" : "right");
-		writeToLog(now, logLine);
+		String fish="";
+
+		if (f.species.equals(Species.bad))
+    		fish="bad ";
+    else
+    	fish="good";
+	 String logLine = "launch\t" +fish + "\t" + f.congruent + "\t"
+			+ f.trial + "\t" + (f.fromLeft ? "left" : "right");
+	if (gameSpec.Equity)
+	{	 logLine+=" EquityN= " + f.equityN ;
+    if (gameSpec.avmode==0)
+	   logLine+="  [minb= "+ f.minBright+"\t"+"maxb= "+f.maxBright+"\t"+"minSize="+f.minSize+"\t"+"maxSize="+f.maxSize + "]";
+	}
+	   writeToLog(now, logLine);
+	
 	}
 	public void writeToLog(long now, Player p) {
 		String logLine="Player\t " + p.intial  + "\t age\t"+p.age + "\tscore\t"+ p.score ;

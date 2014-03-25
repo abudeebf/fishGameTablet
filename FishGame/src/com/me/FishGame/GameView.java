@@ -52,7 +52,7 @@ public class GameView implements Screen {
 	float x;
 	Skin skin;
 	Table table;
-	String s;
+	String s="";
 	public boolean response;
 	long delay=0L;
 	ImageButton boat1;
@@ -104,9 +104,8 @@ public class GameView implements Screen {
 				int nokey = gm.getNoKeyPress();
 				double total=hits+misses+nokey;
 				p.score=(hits/total) *100;
-				 s=SqliteUploader.pre_post(p);
+				// s=SqliteUploader.pre_post(p);
 				gm.writeToLog(System.nanoTime(), p);
-				
 				gm.uploadFile(gm.retrunLogfile().name());
 
 			} 
@@ -156,6 +155,7 @@ public class GameView implements Screen {
 		wrong.setPosition((right.getMinWidth()),(height)/2 + (right.getMinHeight())*2);
 		missed.setText("Missed: " +nokey);
 		missed.setPosition((right.getMinWidth()),(height)/2+ (right.getMinHeight()));
+		
 		total1.setText("Total Point: " + total  + "\n" + s);
 		total1.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()));
 		label.setText("");
@@ -265,7 +265,7 @@ public class GameView implements Screen {
 		stage.addActor(missed);
 		stage.addActor(total1);
 		m=new MyGestureListener(gm);
-		 im = new InputMultiplexer(stage,new GestureDetector(m )); // Order matters here!
+		im = new InputMultiplexer(stage,new GestureDetector(m )); // Order matters here!
 		Gdx.input.setInputProcessor(im);
 	}
 	@Override
@@ -371,7 +371,13 @@ public class GameView implements Screen {
 				visualHz = 0;
 			}
 		}
-
+	    if (gm.gameSpec.avmode==0 && gm.gameSpec.Equity==true)
+        {
+        	gm.gameSpec.minBrightness=aFish.minBright;
+        	gm.gameSpec.maxBrightness=aFish.maxBright;
+        	gm.gameSpec.minThrobSize=aFish.minSize;
+        	gm.gameSpec.maxThrobSize=aFish.maxSize;
+        }
 		int theSize = interpolateSize(gm.gameSpec.minThrobSize,
 				gm.gameSpec.maxThrobSize, aFish.birthTime, System.nanoTime(),
 				visualHz);
