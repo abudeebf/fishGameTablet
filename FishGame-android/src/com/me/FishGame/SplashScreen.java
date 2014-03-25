@@ -16,7 +16,7 @@ public class SplashScreen extends Activity implements OnCompletionListener
 {public static String  init;
  public static String age;
   public static String mode;
-	 
+  public static String equity;
 	public void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
@@ -25,6 +25,7 @@ public class SplashScreen extends Activity implements OnCompletionListener
 		init = intent.getStringExtra(User.INIT);
 		 age=(intent.getStringExtra(User.AGE));
 		 mode=intent.getStringExtra(User.MODE);
+		 equity=intent.getStringExtra(User.EQUITY);
 		// to make the screen active all the time
 		// requestWindowFeature(Window.FEATURE_NO_TITLE);
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);   

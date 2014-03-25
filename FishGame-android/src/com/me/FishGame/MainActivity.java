@@ -28,7 +28,10 @@ import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 			String init = intent.getStringExtra(SplashScreen.init);
 		    String	 age=intent.getStringExtra(SplashScreen.age);
 		    String	 mode=intent.getStringExtra(SplashScreen.mode);
-
+            String equity=intent.getStringExtra(SplashScreen.equity);
+            if (equity.equals("true"))
+            	 initialize(new FishGame(init,age,mode,equity), cfg);
+            else
 	        initialize(new FishGame(init,age,mode), cfg);
 	    }
 	    @SuppressLint("NewApi")

@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 
@@ -12,6 +13,7 @@ public class User extends Activity {
 	public final static String INIT = "initial";
 	public final static String AGE = "age";
 	public final static String MODE = "mode";
+	public final static String EQUITY="equity";
 	protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.user);
@@ -25,13 +27,18 @@ if (init.length()>0 && age.length()>0)
 	Intent intent = new Intent(this, SplashScreen.class);
 	intent.putExtra(INIT, init);
 	intent.putExtra(AGE, age);
+	boolean equity =((CheckBox) findViewById(R.id.equity)).isChecked();
 	boolean checked = ((RadioButton) findViewById(R.id.radio_audio)).isChecked();
     if (checked)
 	intent.putExtra(MODE,"Audio" );
     else
-    	intent.putExtra("mode", "Visual");
-        startActivity(intent);
-        finish();
+    	intent.putExtra(MODE, "Visual");
+    if(equity)
+    	intent.putExtra(EQUITY,"true");
+    else
+    	intent.putExtra(EQUITY,"false");
+    startActivity(intent);
+    finish();
 
 }
 else{
