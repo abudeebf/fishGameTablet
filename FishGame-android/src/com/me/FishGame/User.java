@@ -28,6 +28,7 @@ if (init.length()>0 && age.length()>0)
 	intent.putExtra(INIT, init);
 	intent.putExtra(AGE, age);
 	boolean equity =((CheckBox) findViewById(R.id.equity)).isChecked();
+	System.out.print("Equity" + equity);
 	boolean checked = ((RadioButton) findViewById(R.id.radio_audio)).isChecked();
     if (checked)
 	intent.putExtra(MODE,"Audio" );

@@ -45,6 +45,7 @@ public class SplashScreen extends Activity implements OnCompletionListener
 		intent.putExtra(init, init);
 		intent.putExtra(age, age);
 		intent.putExtra(mode, mode);
+		intent.putExtra(equity, equity);
 		startActivity(intent);      
 		finish();
 		
