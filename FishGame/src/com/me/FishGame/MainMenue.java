@@ -47,7 +47,7 @@ public class MainMenue implements Screen {
 	boolean vGame;
 	public  FileHandle scan;
 	public  FileHandle audioFileHandle,visualFileHandle, file;
-	
+	public String servername="http://moore.cs-i.brandeis.edu/Scripts/";
 	private Texture splashTexture;
 
 
@@ -139,7 +139,7 @@ public class MainMenue implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
-				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"tryGoodAudio.txt","tryGoodAudio.txt");
+				FileHandle script=downloadFile(servername+"tryGood"+mode+".txt","tryGood"+mode+".txt");
 				game.setScreen(new GameView(game,script,p,false));
 				return true;
 			}
@@ -150,7 +150,7 @@ public class MainMenue implements Screen {
 		slowToggle.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
-				FileHandle script=downloadFile("http://moore.cs-i.brandeis.edu/Scripts/"+"trybadAudio.txt","trybadAudio.txt");
+				FileHandle script=downloadFile(servername+"trybad"+mode+".txt","trybad"+mode+".txt");
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
 				game.setScreen(new GameView(game,script,p,false));
 				return true;
