@@ -70,6 +70,7 @@ public class GameView implements Screen {
 	private FileHandle scriptHandle;
 	InputMultiplexer im;
 	boolean playable ;
+	
 	boolean equity;
 	public GameView(Game game, FileHandle scriptHandle,Player p,boolean playable,boolean equity){
 		this.game=game;
@@ -105,6 +106,8 @@ public class GameView implements Screen {
 				double total=hits+misses+nokey;
 				p.score=(hits/total) *100;
 				// s=SqliteUploader.pre_post(p);
+				if(equity)
+					s=gm.writeEquityStat();
 				gm.writeToLog(System.nanoTime(), p);
 				gm.uploadFile(gm.retrunLogfile().name());
 
@@ -148,23 +151,34 @@ public class GameView implements Screen {
 		int nokey = gm.getNoKeyPress();
 		int total=hits-misses-nokey;
 		batch.draw(gameOverimg, 0, 0 , width, height );
+		Table t=new Table();
+		stage.addActor(t);
+		t.setFillParent(true);
 		right.setText("Right: " +hits);
+		t.add(right);
 		total=getScore();
-		right.setPosition((right.getMinWidth()),(height)/2+(right.getMinHeight())*4 );
+		t.row();
+	//	right.setPosition((right.getMinWidth()),(height)/2+(right.getMinHeight())*4 );
 		wrong.setText("Wrong: " +misses);
-		wrong.setPosition((right.getMinWidth()),(height)/2 + (right.getMinHeight())*2);
+		t.add(wrong);
+		//wrong.setPosition((right.getMinWidth()),(height)/2 + (right.getMinHeight())*2);
 		missed.setText("Missed: " +nokey);
-		missed.setPosition((right.getMinWidth()),(height)/2+ (right.getMinHeight()));
+		t.row();
+		t.add(missed);
+		//missed.setPosition((right.getMinWidth()),(height)/2+ (right.getMinHeight()));
+		t.row();
+		t.add(total1);
+		t.row();
 		
 		total1.setText("Total Point: " + total  + "\n" + s);
-		total1.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()));
+		//total1.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()));
 		label.setText("");
 		fishCount.setText("");
-		Q = new TextButton("Quit Game",skin);
-		Q.setWidth(200);
-		Q.setHeight(50);
-		Q.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()*4));
+	
+	
+		//Q.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()*4));
 	    stage.addActor(Q);
+	 
 	    Gdx.input.setInputProcessor(im);
 		Q.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
@@ -175,6 +189,7 @@ public class GameView implements Screen {
 	
 	}
 		});
+		   t.add(Q).width(200).center().spaceBottom(15).height(50);;
 	}
 
 	// handle the tilting of the tablet 
@@ -259,6 +274,7 @@ public class GameView implements Screen {
 		total1=new Label("",style2);
 		stage=new Stage(Gdx.graphics.getWidth(),Gdx.graphics.getHeight(),true)	;	
 		sr=new ShapeRenderer();
+		Q = new TextButton("Quit Game",skin);
 		//stage.addActor(gameOver);
 		stage.addActor(right);
 		stage.addActor(wrong);
@@ -482,9 +498,6 @@ public class GameView implements Screen {
 		long currentTime = System.currentTimeMillis();
 		if(currentTime < tickupEnd) {
 			int prevScore = gm.getPreviousScore();
-			System.out.println(currentTime);
-			System.out.println(tickupStart);
-			System.out.println(currentTime - tickupStart);
 			double tickupRatio = ((currentTime - tickupStart) + 0.0)/(tickupEnd - tickupStart);
 			displayScore = prevScore + (int)((score - prevScore) * tickupRatio);
 		}
@@ -499,7 +512,6 @@ public class GameView implements Screen {
 		batch.draw(boat, x, y, boat.getWidth(), boat.getHeight());
 	    m.m=boat.getWidth();
 	    m.n=boat.getHeight();
-	    
 	}
 	private void updateGameState(GameSpec gs) 
 	{

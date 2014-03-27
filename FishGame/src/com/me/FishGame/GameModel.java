@@ -40,7 +40,7 @@ public class GameModel {
 	String uploadFileName = "";
 	int serverResponseCode = 0;
 	boolean printresult=false;
-	String upLoadServerUri = "http://moore.cs-i.brandeis.edu/UploadToServer.php";
+	String upLoadServerUri = "http://moore.cs-i.brandeis.edu/server.php";
 	Player p;
 	/**
 	 * Create a new GameModel based on the GameSpec parameter
@@ -1003,16 +1003,16 @@ catch(Exception e){
 	 * REFACTOR: we might want to make this a separate class too since it
 	 * doesn't really affect the model.
 	 */
-	 private void writeEquityStat() 
+	 public String writeEquityStat() 
 	    {
 	    	String logLine="Equity Statistics \n";
 	    	logLine+="Species \t Equity# \t accuracy \n";
 	    	for (int i=0; i<goodEquity.length;i++)
-	    		logLine+="Good   \t"+ (i+1)+"      \t" +((goodEquity[i])/(gameSpec.numNeutral/(2*5.0))) +"\n";
+	    		logLine+="Good    \t  "+ (i+1)+"       \t" +((goodEquity[i])/(gameSpec.numNeutral/6.0))*100  +"  \n";
 	    	for (int i=0; i<badEquity.length;i++)
-	    		logLine+="bad    \t"+ (i+1)+"      \t" +(badEquity[i]/(gameSpec.numNeutral/(2*5.0))) +"\n";
+	    		logLine+="bad      \t "+ (i+1)+"       \t" +(badEquity[i]/(gameSpec.numNeutral/6.0))*100 +"\n";
 	    	this.logfile.writeString(logLine,true);
-			System.out.println(logLine);
+			return logLine;
 			
 	    }
 	public void writeToLog(long now, Fish f) {

@@ -147,9 +147,15 @@ public class GameSpec {
 			this.avmode = Integer.parseInt(value);
 		} else if (prop.equals("nonModulatedSound")){
 			this.nonModulatedSound = value;}
-			else if (prop.equals("hasEquity")) {
-				this.Equity = (value.contains("true") ? true : false);
-		} else
+		  else if (prop.equals("hasEquity")) {
+			this.Equity = (value.contains("true") ? true : false);}
+		  else if (prop.equals("totalNeutralTrials"))
+					this.numNeutral=Integer.parseInt(value);
+		  else if ( prop.equals("totalCongruentTrials") )
+				this.numCon=Integer.parseInt(value);
+		  else if (prop.equals("totalInCongruentTrials"))
+				this.numIncon=Integer.parseInt(value);
+		else
 			return false;
 		return true;
 	}

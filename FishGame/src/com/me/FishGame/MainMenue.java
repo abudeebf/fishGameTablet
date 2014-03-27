@@ -147,7 +147,12 @@ public class MainMenue implements Screen {
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
-				FileHandle script=downloadFile(servername+"tryGood"+mode+".txt","tryGood"+mode+".txt");
+				FileHandle script;
+				if (equity)
+					script=downloadFile(servername+"trygood"+mode+ "Equity.txt","trygood"+mode+ "Equity.txt"
+							);
+				else
+			    script=downloadFile(servername+"tryGood"+mode+".txt","tryGood"+mode+".txt");
 				game.setScreen(new GameView(game,script,p,false,equity));
 				return true;
 			}
@@ -158,7 +163,13 @@ public class MainMenue implements Screen {
 		slowToggle.addListener(new InputListener(){
 			@Override
 			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
-				FileHandle script=downloadFile(servername+"trybad"+mode+ ".txt","trybad"+mode+ ".txt"
+				FileHandle script;
+				if (equity)
+					script=downloadFile(servername+"trybad"+mode+ "Equity.txt","trybad"+mode+ "Equity.txt"
+							);
+				else
+					
+				script=downloadFile(servername+"trybad"+mode+ ".txt","trybad"+mode+ ".txt"
 						);
 				Player p=new Player(init,vGame,0,Integer.parseInt(age));
 				game.setScreen(new GameView(game,script,p,false,equity));
