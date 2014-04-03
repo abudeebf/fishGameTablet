@@ -703,7 +703,7 @@ public class GameModel {
 		neutralRoll = Gdx.input.getRoll();
 		neutralPitch = Gdx.input.getPitch();
 		
-		writeToTiltLog(now + " SPAWN " + neutralRoll + "," + neutralPitch);
+		writeToTiltLog(now + " SPAWN " + neutralRoll + " " + neutralPitch +"\n");
 		
 		
 		fishSpawnedCount++;
