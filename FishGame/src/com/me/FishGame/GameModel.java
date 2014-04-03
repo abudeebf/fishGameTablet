@@ -60,7 +60,10 @@ public class GameModel {
 		
 		long now = System.currentTimeMillis();
 		this.tiltLogHandle = Gdx.files.external("Tilt_" + now + ".txt");
+		String logname = "log" + now + ".txt";
+		this.logfile = Gdx.files.external(logname);
 		tiltBuffer = new byte[1<<20]; //1MB
+		
 		
 	}
 
