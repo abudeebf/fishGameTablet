@@ -16,6 +16,9 @@ package com.me.FishGame;
 // REFACTOR:  this hasn't been refactored yet
 
 public class GameEvent {
+	
+	public final static float answerThresholdGood = 17;
+	public final static float answerThresholdBad = -17;
 
 	public static String sep = "\t";
 
@@ -138,9 +141,9 @@ public class GameEvent {
 	private boolean hitCorrectTilting(float c, Fish lastFish) {
 		Species s = lastFish.species;
 		if (s == Species.good)
-			return c < -3;
+			return c > answerThresholdGood;
 		else
-			return c > 3;
+			return c < answerThresholdBad;
 	}
 
 	public String toString() {

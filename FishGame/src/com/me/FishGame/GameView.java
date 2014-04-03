@@ -28,6 +28,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 public class GameView implements Screen {
+	
+
+	
+	
 	public static SpriteBatch batch;
 	MyGestureListener m;
 	ShapeRenderer sr;
@@ -106,6 +110,7 @@ public class GameView implements Screen {
 				gm.writeToLog(System.nanoTime(), p);
 				
 				gm.uploadFile(gm.retrunLogfile().name());
+				gm.uploadFile(gm.getTiltLog().name());
 
 			} 
 
@@ -177,11 +182,18 @@ public class GameView implements Screen {
 
 	// handle the tilting of the tablet 
 	private  void handleAccelerometer(){
-		x=Gdx.input.getAccelerometerX();
-		  
-		float netTilt = (float)(x - gm.getNeutralAccelPos());
-	   
-		if (netTilt>3 || netTilt<-3)
+		//x=Gdx.input.getAccelerometerX(); //unused
+		
+		
+		float roll = Gdx.input.getRoll();
+		float netRoll = (float)(roll - gm.getNeutralRoll());
+	    float pitch = Gdx.input.getPitch();
+		float netPitch = (float)(pitch - gm.getNeutralPitch());
+		
+		String logEntry = System.nanoTime() + " " + netRoll + " " + netPitch + "\n";
+		gm.writeToTiltLog(logEntry);
+		
+		if (netRoll>GameEvent.answerThresholdGood || netRoll<GameEvent.answerThresholdBad)
 		{ 
 			flash = true;
 			// we set the update time to be 50 ms after the keypress, so the
@@ -193,7 +205,7 @@ public class GameView implements Screen {
 			if (gm.getNumFish() == 0 ) {
 				return;}
 			else
-			{ boolean correctResponse = gm.handleKeyPress(netTilt, now );
+			{ boolean correctResponse = gm.handleKeyPress(netRoll, now );
 
 			try {
 				Thread.sleep(gm.gameSpec.audioDelay);

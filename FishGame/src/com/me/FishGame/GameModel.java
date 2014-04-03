@@ -42,6 +42,11 @@ public class GameModel {
 	boolean printresult=false;
 	String upLoadServerUri = "http://moore.cs-i.brandeis.edu/UploadToServer.php";
 	Player p;
+	
+	private FileHandle tiltLogHandle;
+	private byte[] tiltBuffer;
+	private int bufferPointer;
+	
 	/**
 	 * Create a new GameModel based on the GameSpec parameter
 	 * 
@@ -52,6 +57,11 @@ public class GameModel {
 		this.gameSpec = gameSpec;
 		this.scan = scriptHandle;
 		this.p=p;
+		
+		long now = System.currentTimeMillis();
+		this.tiltLogHandle = Gdx.files.external("Tilt_" + now + ".txt");
+		tiltBuffer = new byte[1<<20]; //1MB
+		
 	}
 
 	/**
@@ -109,6 +119,11 @@ public class GameModel {
 	public FileHandle retrunLogfile(){
 		return this.logfile;
 	}
+	
+	public FileHandle getTiltLog() {
+		return this.tiltLogHandle;
+	}
+	
 	public synchronized double getCurrentFishX() {
 		if (currentFish != null)
 			return currentFish.x;
@@ -353,7 +368,7 @@ public class GameModel {
 			this.gameOver = true;
 		}
 
-
+		finishTiltLog();
 
 	}
 
@@ -482,6 +497,9 @@ public class GameModel {
 
 		// now we write the result to the log
 		this.writeToLog(ge.when, ge);
+		
+		writeToTiltLog(ge.when + " " + ge.toString() + "\n");
+
 
 		// flash the lights, and modify the score
 		// REFACTOR: move the goodclip/badclip playing into this file
@@ -679,17 +697,27 @@ public class GameModel {
 
 		
 		//get neutral accel state
-		neutralAccelerometerPosition = Gdx.input.getAccelerometerX();
+		neutralRoll = Gdx.input.getRoll();
+		neutralPitch = Gdx.input.getPitch();
+		
+		writeToTiltLog(now + " SPAWN " + neutralRoll + "," + neutralPitch);
+		
 		
 		fishSpawnedCount++;
 	}
 	
     //this is updated whenever a fish is spawned
-    private float neutralAccelerometerPosition;
+    private float neutralRoll;
+    private float neutralPitch;
 	
-	public float getNeutralAccelPos() {
-		return neutralAccelerometerPosition;
+	public float getNeutralRoll() {
+		return neutralRoll;
 	}
+	public float getNeutralPitch() {
+		return neutralPitch;
+	}
+	
+	
 
 	
 	private void playFishSound() {
@@ -979,6 +1007,26 @@ public class GameModel {
 		getLogFile(); // make sure the logfile is open!
 		this.logfile.writeString(logLine,true);
 	}
+	
+	
+	private boolean tiltLogOpen = true;
+	public void writeToTiltLog(String logEntry) {
+		if(!tiltLogOpen) {
+			return;
+		}
+		byte[] logBytes = logEntry.getBytes();
+		if(bufferPointer + logBytes.length >= tiltBuffer.length) {
+			tiltLogHandle.writeBytes(tiltBuffer,0,bufferPointer,true);
+			bufferPointer = 0;
+		}
+		System.arraycopy(logBytes,0,tiltBuffer,bufferPointer,logBytes.length);
+		bufferPointer+=logBytes.length;
+	}
+	public void finishTiltLog() {
+		tiltLogHandle.writeBytes(tiltBuffer,0,bufferPointer,true);
+		tiltLogOpen = false;
+	}
+	
 	// method to upload to the server moors 
 	public int uploadFile(String filePath) throws IOException {
 
