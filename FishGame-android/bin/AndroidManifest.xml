@@ -21,7 +21,6 @@
         >
         <activity
             android:name=".User"
-              android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
@@ -32,7 +31,6 @@
             
         </activity>
          <activity
-               android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:name=".SplashScreen"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
@@ -41,7 +39,6 @@
             
         </activity>
         <activity
-              android:theme="@android:style/Theme.Black.NoTitleBar.Fullscreen"
             android:name=".MainActivity"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
