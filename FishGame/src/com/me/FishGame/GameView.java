@@ -28,10 +28,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 
 public class GameView implements Screen {
-	
-
-	
-	
 	public static SpriteBatch batch;
 	MyGestureListener m;
 	ShapeRenderer sr;
@@ -74,11 +70,20 @@ public class GameView implements Screen {
 	private FileHandle scriptHandle;
 	InputMultiplexer im;
 	boolean playable ;
+	boolean practise=false;
 	public GameView(Game game, FileHandle scriptHandle,Player p,boolean playable){
 		this.game=game;
 		this.scriptHandle = scriptHandle;
 		this.p=p;
 		this.playable=playable;
+		practise=false;
+	}
+	public GameView(Game game, FileHandle scriptHandle,Player p,boolean playable,boolean practise){
+		this.game=game;
+		this.scriptHandle = scriptHandle;
+		this.p=p;
+		this.playable=playable;
+		this.practise=true;
 	}
 	// this method is same as paint method in desktop version 
 	// this called multiple time 
@@ -91,45 +96,47 @@ public class GameView implements Screen {
 		if (gm.isGameOver() ) {
 			
 			this.bgSound.stop();
-			if(playable)
-			{batch.begin();
-		
-			gameOverWindow(s);
-			batch.end();
-			stage.draw();
-			stage.act();
-			if(printresult==false)
-			{  try {
-				printresult=true;
-				double hits = gm.getHits();
-				int misses = gm.getMisses();
-				int nokey = gm.getNoKeyPress();
-				double total=hits+misses+nokey;
-				p.score=(hits/total) *100;
-				 s=SqliteUploader.pre_post(p);
-				gm.writeToLog(System.nanoTime(), p);
-				
-				gm.uploadFile(gm.retrunLogfile().name());
-				gm.uploadFile(gm.getTiltLog().name());
-
-			} 
+			if(playable || practise)
+			{
+				batch.begin();
+				gameOverWindow(s);
+				batch.end();
+				stage.draw();
+				stage.act();
+				if(printresult==false)
+				{  
+					try {
+						
+					printresult=true;
+					double hits = gm.getHits();
+					int misses = gm.getMisses();
+					int nokey = gm.getNoKeyPress();
+					double total=hits+misses+nokey;
+					p.score=(hits/total) *100;
+					if (practise==false)
+					{ s=SqliteUploader.pre_post(p,gm.fishType,gm.countfish,gm.responseTimes);
+					gm.writeToLog(System.nanoTime(), p);
+					gm.uploadFile(gm.retrunLogfile().name());
+					gm.uploadFile(gm.getTiltLog().name());
+					}
+				} 
 
 			catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}}
-			
+
 			return;
 
-		}
+			}
 			else
 				if ( p.vmode)
-				game.setScreen(new MainMenue(game,p.intial,p.age+"","Visual"));
+					game.setScreen(new MainMenue(game,p.intial,p.age+"","Visual"));
 				else
 					game.setScreen(new MainMenue(game,p.intial,p.age+"","Audio"));
-					
-			}
-		
+
+		}
+
 		batch.begin();
 		drawBackground(); // I have to think how to make it move in the oppsite side
 		drawFish();
@@ -163,7 +170,10 @@ public class GameView implements Screen {
 		total1.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()));
 		label.setText("");
 		fishCount.setText("");
-		Q = new TextButton("Quit Game",skin);
+		if(practise)
+			Q = new TextButton("Back",skin);	
+		else
+			Q = new TextButton("Quit Game",skin);
 		Q.setWidth(200);
 		Q.setHeight(50);
 		Q.setPosition((right.getMinWidth()),(height)/2-(right.getMinHeight()*4));
@@ -171,8 +181,15 @@ public class GameView implements Screen {
 	    Gdx.input.setInputProcessor(im);
 		Q.addListener(new InputListener() {
 			public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-				
-				Gdx.app.exit();
+				if (practise)
+				{
+					if ( p.vmode)
+						game.setScreen(new MainMenue(game,p.intial,p.age+"","Visual"));
+					else
+						game.setScreen(new MainMenue(game,p.intial,p.age+"","Audio"));
+				}
+				else
+					Gdx.app.exit();
 				
 				return false;
 	

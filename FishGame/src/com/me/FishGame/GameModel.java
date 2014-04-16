@@ -42,7 +42,10 @@ public class GameModel {
 	boolean printresult=false;
 	String upLoadServerUri = "http://moore.cs-i.brandeis.edu/UploadToServer.php";
 	Player p;
-	
+	public int[] fishType=new int[3];
+    public int[] countfish=new int[3];
+    public int[] responseTimes=new int[3];
+    
 	private FileHandle tiltLogHandle;
 	private byte[] tiltBuffer;
 	private int bufferPointer;
@@ -513,8 +516,11 @@ public class GameModel {
 		this.soundflash = true;
 		this.soundIndicatorUpdate = System.nanoTime() + 50 * million;
 
+		countfish[ge.congruent]+=1;
 		// update the summary data and send markers to the EEG
 		if (ge.correctResponse) {
+			fishType[ge.congruent]+=1;
+			responseTimes[ge.congruent]+=ge.responseTime;
 			//sendEEGMarker(ge.when,"KEYG");
 			this.wealth++;
 			this.hits += 1;
@@ -526,6 +532,7 @@ public class GameModel {
 			this.wealth--;
 			this.misses += 1;
 		}
+
 
 		// Finally, remove the last fish (should only be one!)
 		// but don't remove until the end as update could be called as we are

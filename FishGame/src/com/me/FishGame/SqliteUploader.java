@@ -8,22 +8,28 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 
 public class SqliteUploader {
-	private static final  String url = "http://moore.cs-i.brandeis.edu/fishpolice!/add_user.php";
-	public static String pre_post(Player p ) {
+	private static final  String url = "http://moore.cs-i.brandeis.edu/fishpolice!/add_user2.php";
+	public static String pre_post(Player p,int[]type, int[] count, int[] response ) {
 
-        
+        String typefish=Arrays.toString(type).replace("[","").replace("]", "");
+        String countfish=Arrays.toString(count).replace("[","").replace("]", "");
+        String responsefish=Arrays.toString(response).replace("[","").replace("]", "");
 		String urlParameters = "";
-
+        System.out.println (" fish type " + Arrays.toString(type));
 		try {
 			
 			urlParameters = "intial=" + URLEncoder.encode(p.intial, "UTF-8") +
 					"&score=" + URLEncoder.encode(""+p.score, "UTF-8") +
 					"&vmode=" + URLEncoder.encode(""+p.vmode, "UTF-8") +
-					"&age=" + URLEncoder.encode(""+p.age, "UTF-8");
+					"&age=" + URLEncoder.encode(""+p.age, "UTF-8")+
+					"&fishtype="+URLEncoder.encode(""+typefish, "UTF-8")+
+					"&response="+URLEncoder.encode(""+responsefish, "UTF-8")+
+					"&fishcount="+URLEncoder.encode(""+countfish, "UTF-8");
 		} catch (UnsupportedEncodingException e) {
 			Gdx.app.log("error",  "Error21: " + e.getMessage());   
 			e.printStackTrace();
@@ -33,6 +39,7 @@ public class SqliteUploader {
 		String post = executePost( url , urlParameters ) ;
 
 		Gdx.app.log( " s","HttpPost: " + post);
+	
 		return post;   
 
 

@@ -36,7 +36,7 @@ public class MainMenue implements Screen {
 	TextureAtlas buttonAtlas;
 	TextButtonStyle buttonStyle;
 	TextButton button;
-	TextButton fastToggle,slowToggle,StartToggle,QuitToggle;
+	TextButton fastToggle,slowToggle,StartToggle,QuitToggle,practiseToggle;
 	CheckBoxStyle checkStyle;
 	Skin skin;
 	SpriteBatch batch;
@@ -156,6 +156,18 @@ public class MainMenue implements Screen {
 				return true;
 			}
 		});
+		
+		practiseToggle = new TextButton("Practise now",skin);
+		stage.addActor(practiseToggle);
+		practiseToggle.addListener(new InputListener(){
+			@Override
+			public boolean touchDown(InputEvent event, float x, float y, int pointer, int b) {
+				FileHandle script=downloadFile(servername+"practice"+mode+".txt","practise"+mode+".txt");
+				Player p=new Player(init,vGame,0,Integer.parseInt(age));
+				game.setScreen(new GameView(game,script,p,false,true));
+				return true;
+			}
+		});
 		StartToggle = new TextButton("Start Playing",skin);
 		stage.addActor(StartToggle);
 		StartToggle.addListener(new InputListener(){
@@ -188,6 +200,8 @@ public class MainMenue implements Screen {
 		table.add(fastToggle).width(150).center().spaceBottom(15).height(50);
 		table.row();
 		table.add(slowToggle).width(150).center().spaceBottom(15).height(50);
+		table.row();
+		table.add(practiseToggle).width(150).center().spaceBottom(15).height(50);
 		table.row();
 		table.add(StartToggle).width(200).center().spaceBottom(15).height(50);
 		table.row();
